@@ -14,4 +14,18 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.username
-    
+
+
+class RealEstate(models.Model):
+    """
+    this class is for showing the real estate status and info of it
+    """
+    ceo = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="realestate", verbose_name="CEO")
+    address = models.CharField(max_length=350, verbose_name="Address")
+    city = models.CharField(max_length=150, null=False, verbose_name="City")
+    country = models.CharField(max_length=150, null=False, verbose_name="Country")
+    agents = models.ManyToManyField(User, related_name='realestate', verbose_name="Agents")
+    is_guarantee = models.BooleanField(default=True, verbose_name="Guarantee")
+    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+
+
