@@ -1,7 +1,8 @@
 from django.db import models
-from django.core.validators import MinLengthValidator
+from django.core.validators import MinLengthValidator, MinValueValidator
 from account.models import User
 from account.models import RealEstate
+from django.core.exceptions import ValidationError
 
 
 class Home(models.Model):
@@ -23,3 +24,52 @@ class Home(models.Model):
 
     def __str__(self):
         return f"{self.owner.username}"
+
+
+class Sell(models.Model):
+    """
+    this class is for selling, and it stores all the information of the seller and shopper
+    """
+    seller = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Seller',
+                               related_name='sell_seller')
+    shopper = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Shopper',
+                                related_name='sell_shopper')
+    final_price = models.FloatField(verbose_name='Final Price')
+    sell_code = models.IntegerField(verbose_name='Sell Code')
+    tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
+    sold_date = models.DateTimeField(auto_now_add=True, verbose_name='Sold Date')
+
+    def clean(self):
+        """
+        this function is for checking that calculate tax is not lower than
+        """
+        if self.final_price < 0:
+            raise ValidationError("The final price should not be negative")
+        calculate_tax = self.final_price * 0.2
+        if self.tax != calculate_tax:
+            raise ValidationError(f"Tax must be {calculate_tax} based on the final price.")
+
+    def __str__(self):
+        return f"{self.final_price} -> {self.sell_code}"
+
+
+class Rent(models.Model):
+    """
+    this class is for the rent, and we keep the information of who wants to rent the home and
+    """
+    landlord = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='LandLord', related_name='rent_landlord')
+    tenant = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Tenant', related_name='rent_tenant')
+    final_price = models.FloatField(verbose_name='Final Price')
+    rental_start_date = models.DateField(verbose_name='Rental Start Date')
+    rental_end_date = models.DateField(verbose_name='Rental End Date')
+    tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
+
+    def clean(self):
+        if self.final_price < 0:
+            raise ValidationError("The final price should not be negative")
+        calculate_tax = self.final_price * 0.05
+        if self.tax != calculate_tax:
+            raise ValidationError(f"Tax must be {calculate_tax} based on the final price.")
+
+    def __str__(self):
+        return f"{self.landlord}/ {self.tenant}"
