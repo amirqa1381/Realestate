@@ -22,6 +22,9 @@ class Home(models.Model):
     beds = models.PositiveIntegerField(verbose_name='Beds')
     realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home')
 
+    def make_address_shorter(self):
+        return self.address[:25]
+
     def __str__(self):
         return f"{self.owner.username}"
 
@@ -85,7 +88,8 @@ class Repair(models.Model):
     repair_code = models.IntegerField(verbose_name='Repair Code')
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
     repair_price = models.FloatField(verbose_name='Final Price')
-    home = models.ForeignKey(Home, on_delete=models.SET_NULL, null=True, verbose_name='Home',related_name='home_repair')
+    home = models.ForeignKey(Home, on_delete=models.SET_NULL, null=True, verbose_name='Home',
+                             related_name='home_repair')
 
     def clean(self):
         if self.repair_price < 0:
