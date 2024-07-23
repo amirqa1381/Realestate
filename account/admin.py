@@ -10,7 +10,8 @@ class UserAdmin(admin.ModelAdmin):
     fieldsets = [
         (
             None,
-            {'fields': ['username', 'email', 'first_name', 'last_name', 'is_active', 'is_staff', 'address']},
+            {'fields': ['username', 'password', 'email', 'first_name', 'last_name', 'is_active', 'is_staff',
+                        'address']},
         ),
         (
             'Advanced Option',
@@ -20,6 +21,21 @@ class UserAdmin(admin.ModelAdmin):
             }
         )
     ]
+
+    def has_add_permission(self, request):
+        """
+        in this function we set that only the superuser can add new user in the database
+        """
+        return request.user.is_superuser
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser or request.user.is_staff
+
+    def has_change_permission(self, request, obj=None):
+        """
+        in the change function all the staff and superuser can change the user information
+        """
+        return True
 
 
 @admin.register(RealEstate)
