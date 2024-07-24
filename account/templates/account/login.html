@@ -1,0 +1,31 @@
+{% extends 'master.html' %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-7">
+                <h2 class="text-center">Login</h2>
+                <form class="form-a contactForm" action="{% url 'login' %}" method="post" role="form"
+                      style="margin-top: 8rem">
+                    {% csrf_token %}
+                    <div id="sendmessage" class="alert alert-success" style="display: none;">Your message has been sent.
+                        Thank you!
+                    </div>
+                    <div id="errormessage" class="alert alert-danger" style="display: none;"></div>
+                    <div class="form-group">
+                        {{ form.as_p }}
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Login</button>
+                        <a href="{% url 'register' %}" class="btn btn-secondary">have not account?</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
