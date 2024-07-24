@@ -101,3 +101,16 @@ class Repair(models.Model):
 
     def __str__(self):
         return f"{self.home.owner}/{self.mechanic}/{self.repair_price}"
+
+
+class HomeImages(models.Model):
+    """
+    this class is for images of the home , i made this class because it may have multiple images
+    instead of one image
+    """
+    home = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Home', related_name='image')
+    image = models.ImageField(upload_to='homes-images', verbose_name='Image')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
+
+    def __str__(self):
+        return self.home.owner.username
