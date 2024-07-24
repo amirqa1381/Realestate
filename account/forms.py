@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from account.models import User
 
 
@@ -27,3 +27,17 @@ class RegistrationForm(UserCreationForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].required = False
         self.fields['last_name'].required = False
+
+
+class LoginForm(AuthenticationForm):
+    """
+    this form is for authentication the user and inherit from the Authentication class
+    that is in the built-in classes of the django
+    """
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}), required=True, label='Username')
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}), label='Password',
+                               required=True)
+
+    class Meta:
+        model = User
+        fields = ['username', 'password']
