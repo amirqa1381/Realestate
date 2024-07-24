@@ -10,7 +10,7 @@ class Home(models.Model):
     this class is for home and save the info of it
     """
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='home')
-    address = models.CharField(max_length=400, verbose_name='Address', validators=[MinLengthValidator(50)])
+    address = models.CharField(max_length=400, verbose_name='Address', validators=[MinLengthValidator(10)])
     meter = models.IntegerField(verbose_name='Meter')
     city = models.CharField(max_length=100, verbose_name='City')
     country = models.CharField(max_length=100, verbose_name='Country')
@@ -20,10 +20,12 @@ class Home(models.Model):
     description = models.TextField(verbose_name='Description')
     floor = models.PositiveIntegerField(verbose_name='Floors')
     beds = models.PositiveIntegerField(verbose_name='Beds')
-    realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home')
+    realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home',
+                                   null=True, blank=True)
+    year_built = models.DateField(verbose_name='Year Built', default='2024-01-01')
 
-    def make_address_shorter(self):
-        return self.address[:25]
+    def address_shorter(self):
+        return f"{self.address[:25]}..."
 
     def __str__(self):
         return f"{self.owner.username}"
