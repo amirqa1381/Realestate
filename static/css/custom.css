@@ -1,0 +1,10 @@
+.logout-me {
+    background: none;          /* No background */
+    border: none;             /* No border */
+    cursor: pointer;          /* Pointer cursor */
+    transition: color 0.3s ease;
+}
+
+.logout-me:hover {
+    color: #2eca6a;
+}
