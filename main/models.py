@@ -20,6 +20,8 @@ class Home(models.Model):
     description = models.TextField(verbose_name='Description')
     floor = models.PositiveIntegerField(verbose_name='Floors')
     beds = models.PositiveIntegerField(verbose_name='Beds')
+    baths = models.PositiveIntegerField(verbose_name='Bath', default=1)
+    garages = models.PositiveIntegerField(verbose_name='Garages', default=1)
     realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home',
                                    null=True, blank=True)
     year_built = models.DateField(verbose_name='Year Built', default='2024-01-01')
@@ -88,6 +90,7 @@ class HomeImages(models.Model):
     """
     home = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Home', related_name='image')
     image = models.ImageField(upload_to='homes-images', verbose_name='Image')
+    alt = models.CharField(verbose_name='Alt', null=True, blank=True, max_length=100)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
 
     def __str__(self):
