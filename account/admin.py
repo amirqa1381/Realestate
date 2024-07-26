@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, RealEstate
+from .models import User, RealEstate, Agent
 
 
 @admin.register(User)
@@ -41,3 +41,6 @@ class UserAdmin(admin.ModelAdmin):
 @admin.register(RealEstate)
 class RealEstateAdmin(admin.ModelAdmin):
     list_display = ['ceo', 'is_guarantee', 'city', 'country']
+
+
+admin.site.register(Agent)
