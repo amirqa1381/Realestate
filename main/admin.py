@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Home, Rent, Repair, Sell, HomeImages
+from .models import Home, Rent, Sell, HomeImages
 
 
 class HomeImageInlineAdmin(admin.TabularInline):
@@ -18,5 +18,4 @@ class HomeAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Rent)
-admin.site.register(Repair)
 admin.site.register(Sell)
