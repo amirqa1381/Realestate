@@ -1,0 +1,23 @@
+{% extends 'master.html' %}
+
+
+{% block title %}
+    Logout
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1>Goodbye!</h1>
+        <p>You have been logged out successfully.</p>
+        <a href="{% url 'login' %}">Log In Again</a>
+    </div>
+{% endblock %}

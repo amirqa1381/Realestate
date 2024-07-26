@@ -25,9 +25,22 @@ class RealEstate(models.Model):
     address = models.CharField(max_length=350, verbose_name="Address")
     city = models.CharField(max_length=150, null=False, verbose_name="City")
     country = models.CharField(max_length=150, null=False, verbose_name="Country")
-    agents = models.ManyToManyField(User, related_name='realestate', verbose_name="Agents")
     is_guarantee = models.BooleanField(default=True, verbose_name="Guarantee")
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
 
     def __str__(self):
         return f"{self.ceo.username} -> {self.city}"
+
+
+class Agent(models.Model):
+    """
+    this class is for the agents and every person that his/her job is agent of the houses
+    should submit and register for working in the website and our service
+    """
+    agent = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Agent', related_name='agent')
+    realEstate = models.ForeignKey(RealEstate, on_delete=models.SET_NULL, null=True, blank=True,
+                                   verbose_name='RealEstate')
+    is_active = models.BooleanField(default=True, verbose_name='Is Active')
+
+    def __str__(self):
+        return self.agent.username
