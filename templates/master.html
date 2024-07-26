@@ -27,7 +27,7 @@
 
     <!-- Main Stylesheet File -->
     <link href="/static/css/style.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="/static/css/custom.css">
 </head>
 <body>
 <div class="click-closed"></div>
@@ -154,7 +154,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'register' %}">Register</a>
                     </li>
-                     <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
                     </li>
                 {% else %}
@@ -178,6 +178,15 @@
                 <li class="nav-item">
                     <a class="nav-link" href="contact.html">Contact</a>
                 </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        {#                        <a class="nav-link" href="contact.html">LogOut</a>#}
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input type="submit" class="nav-link logout-me" value="Logout">
+                        </form>
+                    </li>
+                {% endif %}
             </ul>
         </div>
         <button type="button" class="btn btn-b-n navbar-toggle-box-collapse d-none d-md-block" data-toggle="collapse"
