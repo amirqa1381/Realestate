@@ -23,6 +23,7 @@ class Home(models.Model):
     realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home',
                                    null=True, blank=True)
     year_built = models.DateField(verbose_name='Year Built', default='2024-01-01')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at', blank=True, null=True)
 
     def address_shorter(self):
         return f"{self.address[:25]}..."
