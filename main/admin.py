@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Home, Rent, Sell, HomeImages
+from .models import Home, Rent, Sell, HomeImages, News
 
 
 class HomeImageInlineAdmin(admin.TabularInline):
@@ -14,8 +14,9 @@ class HomeAdmin(admin.ModelAdmin):
     """
     list_display = ['owner', 'address_shorter', 'meter', 'is_active', 'created_at']
     list_filter = ['meter', 'city', 'country', 'is_active']
-    inlines = [HomeImageInlineAdmin,]
+    inlines = [HomeImageInlineAdmin, ]
 
 
 admin.site.register(Rent)
 admin.site.register(Sell)
+admin.site.register(News)
