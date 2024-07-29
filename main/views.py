@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.views import View
-from .models import Home
+from .models import Home, News
 from account.models import Agent
 
 
@@ -19,7 +19,7 @@ class IndexView(View):
         agents = Agent.objects.all()[:6]
         context = {
             'recently_homes': recently_homes,
-            'agents': agents
+            'agents': agents,
         }
         return render(request, 'main/index.html', context)
 
