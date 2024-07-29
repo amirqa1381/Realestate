@@ -95,3 +95,28 @@ class HomeImages(models.Model):
 
     def __str__(self):
         return self.home.owner.username
+
+
+class News(models.Model):
+    """
+    this is a class that i've written for saving and showing the news of the site,
+    and it'll keep the information of the news
+    """
+    NEWS_CATEGORY = {
+        'RESIDENTIAL': 'residential',
+        'COMMERCIAL': 'commercial',
+        'PARK': 'park',
+        'SELLING': 'selling',
+        'RENTING': 'renting',
+    }
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Author', related_name='news')
+    title = models.CharField(max_length=100, verbose_name='Title')
+    description = models.TextField(verbose_name='Description')
+    image = models.ImageField(upload_to='news', verbose_name='Image')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
+    news_category = models.CharField(max_length=15, choices=NEWS_CATEGORY, default='RESIDENTIAL')
+
+    def __str__(self):
+        return f"{self.author.username} -> {self.title}"
+
+
