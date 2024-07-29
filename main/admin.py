@@ -14,7 +14,7 @@ class HomeAdmin(admin.ModelAdmin):
     """
     list_display = ['owner', 'address_shorter', 'meter', 'is_active', 'created_at']
     list_filter = ['meter', 'city', 'country', 'is_active']
-    inlines = [HomeImageInlineAdmin,]
+    inlines = [HomeImageInlineAdmin, ]
 
 
 admin.site.register(Rent)
