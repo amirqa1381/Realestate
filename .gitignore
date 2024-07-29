@@ -8,6 +8,8 @@ Github has a great boilerplate .gitignore
 __pycache__/
 *.py[cod]
 
+*.pyc
+
 # C extensions
 *.so
 
