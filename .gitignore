@@ -1,5 +1,5 @@
 venv
-.idea
+.idea/
 db.sqlite3
 
 Github has a great boilerplate .gitignore
