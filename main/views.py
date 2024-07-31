@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.views import View
-from .models import Home, News
+from .models import Home
 from account.models import Agent
+from django.views.generic import TemplateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class IndexView(View):
@@ -28,3 +30,10 @@ class IndexView(View):
         this method is for the post method and it handel the post method request
         """
         pass
+
+
+class AboutView(LoginRequiredMixin, TemplateView):
+    """
+    this class is for showing the about page to the user
+    """
+    template_name = 'main/about.html'
