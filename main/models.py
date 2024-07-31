@@ -97,7 +97,7 @@ class HomeImages(models.Model):
         return self.home.owner.username
 
 
-class News(models.Model):
+class Blog(models.Model):
     """
     this is a class that i've written for saving and showing the news of the site,
     and it'll keep the information of the news

@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from account.models import User
+from account.models import User, Contact
 
 
 class RegistrationForm(UserCreationForm):
@@ -41,3 +41,22 @@ class LoginForm(AuthenticationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class ContactForm(forms.ModelForm):
+    """
+    this class is for the contact form and this form is a way for contacting between the
+    user and site owners
+    """
+
+    class Meta:
+        model = Contact
+        fields = ['subject', 'message']
+        widgets = {
+            'subject': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Subject'}),
+            'message': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Message'})
+        }
+        labels = {
+            'subject': '',
+            'message': ''
+        }

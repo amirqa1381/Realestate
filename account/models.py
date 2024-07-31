@@ -44,3 +44,18 @@ class Agent(models.Model):
 
     def __str__(self):
         return self.agent.username
+
+
+class Contact(models.Model):
+    """
+    this class is for the contact form and keep the all the information of the contact form that user
+    sent
+    """
+    subject = models.CharField(max_length=150, verbose_name='Subject')
+    message = models.TextField(verbose_name='Message')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Author', related_name='contact')
+    created = models.DateField(auto_now_add=True, verbose_name='Created At')
+    updated_at = models.DateField(auto_now=True, auto_now_add=False, verbose_name='Updated At')
+
+    def __str__(self):
+        return self.subject
