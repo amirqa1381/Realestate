@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.http import HttpRequest
 from django.views import View
-from .models import Home
+from .models import Home, Blog
 from account.models import Agent
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -37,3 +37,19 @@ class AboutView(LoginRequiredMixin, TemplateView):
     this class is for showing the about page to the user
     """
     template_name = 'main/about.html'
+
+
+class BlogListView(LoginRequiredMixin, ListView):
+    """
+    this class is for showing the list of the Blogs
+    """
+    model = Blog
+    template_name = 'main/blog.html'
+    context_object_name = 'blogs'
+    paginate_by = 6
+
+    def get_queryset(self):
+        """
+        here we make a query to the database for getting the latest books
+        """
+        return Blog.objects.all().order_by('-created_at')
