@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpRequest
 from django.views import View
 from .models import Home, Blog
@@ -66,3 +66,32 @@ class PropertyListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Home.objects.all().order_by('-created_at')
+
+
+class SinglePropertyView(LoginRequiredMixin, View):
+    """
+    this class is for showing the all the information of the Property and connect the agent and customer
+    together
+    """
+    def get(self, request: HttpRequest, slug):
+        """
+        this method is for the handling the get method of the view and when user sent a
+        get request for getting all the info this view will work and handle that.
+        """
+        home = get_object_or_404(Home, slug=slug)
+        context = {
+            'home': home,
+        }
+        return render(request, 'main/single_property.html', context)
+
+    def post(self, request: HttpRequest):
+        """
+        this method is for the handling the post method of the view and when user sent a
+        post request for getting all the info this view will work and handle that.
+        """
+        pass
+
+
+
+
+
