@@ -1,5 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator, MinValueValidator
+from django.utils.text import slugify
+
 from account.models import User
 from account.models import RealEstate
 from django.core.exceptions import ValidationError
@@ -26,6 +28,11 @@ class Home(models.Model):
                                    null=True, blank=True)
     year_built = models.DateField(verbose_name='Year Built', default='2024-01-01')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at', blank=True, null=True)
+    slug = models.SlugField(max_length=150, verbose_name='Slug', unique=True, blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.address_shorter())
+        super(Home, self).save(*args, **kwargs)
 
     def address_shorter(self):
         return f"{self.address[:25]}..."
@@ -118,5 +125,3 @@ class Blog(models.Model):
 
     def __str__(self):
         return f"{self.author.username} -> {self.title}"
-
-
