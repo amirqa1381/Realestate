@@ -72,7 +72,7 @@
                                         <div class="price-box d-flex">
                                             <span class="price-a">{{ property.price|floatformat:'-3g' }}</span>
                                         </div>
-                                        <a href="property-single.html" class="link-a">Click here to view
+                                        <a href="{% url 'single-property' slug=property.slug %}" class="link-a">Click here to view
                                             <span class="ion-ios-arrow-forward"></span>
                                         </a>
                                     </div>
