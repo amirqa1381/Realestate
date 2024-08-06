@@ -1,10 +1,11 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpRequest
 from django.views import View
 from .models import Home, Blog
 from account.models import Agent
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from .forms import PropertyRequestForm
 
 
 class IndexView(View):
@@ -73,25 +74,34 @@ class SinglePropertyView(LoginRequiredMixin, View):
     this class is for showing the all the information of the Property and connect the agent and customer
     together
     """
+
     def get(self, request: HttpRequest, slug):
         """
         this method is for the handling the get method of the view and when user sent a
         get request for getting all the info this view will work and handle that.
         """
+        form = PropertyRequestForm()
         home = get_object_or_404(Home, slug=slug)
         context = {
             'home': home,
+            'form': form,
         }
         return render(request, 'main/single_property.html', context)
 
-    def post(self, request: HttpRequest):
+    def post(self, request: HttpRequest, slug):
         """
         this method is for the handling the post method of the view and when user sent a
         post request for getting all the info this view will work and handle that.
         """
-        pass
-
-
-
-
-
+        form = PropertyRequestForm(request.POST)
+        home = get_object_or_404(Home, slug=slug)
+        if form.is_valid():
+            submit = form.save(commit=False)
+            submit.home = home
+            submit.save()
+            return redirect('single-property', slug=home.slug)
+        context = {
+            'home': home,
+            'form': form,
+        }
+        return render(request, 'main/single_property.html', context)

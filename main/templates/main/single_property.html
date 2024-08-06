@@ -1,5 +1,5 @@
 {% extends 'master.html' %}
-
+{% load thumbnail %}
 
 
 {% block title %}
@@ -13,8 +13,7 @@
             <div class="row">
                 <div class="col-md-12 col-lg-8">
                     <div class="title-single-box">
-                        <h1 class="title-single">304 Blaster Up</h1>
-                        <span class="color-text-a">Chicago, IL 606543</span>
+                        <h1 class="title-single">{{ home.address }}</h1>
                     </div>
                 </div>
                 <div class="col-md-12 col-lg-4">
@@ -27,7 +26,7 @@
                                 <a href="property-grid.html">Properties</a>
                             </li>
                             <li class="breadcrumb-item active" aria-current="page">
-                                304 Blaster Up
+                                {{ home.address|truncatechars:"10" }}
                             </li>
                         </ol>
                     </nav>
@@ -46,12 +45,12 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="image-gallery">
-                                    <img src="/static/img/about-2.jpg" alt="" class="gallery-image">
-                                    <img src="/static/img/slide-3.jpg" alt="" class="gallery-image">
-                                    <img src="/static/img/slide-1.jpg" alt="" class="gallery-image">
-                                    <img src="/static/img/slide-1.jpg" alt="" class="gallery-image">
-                                    <img src="/static/img/slide-1.jpg" alt="" class="gallery-image">
-                                    <!-- add more images here -->
+                                    {% for image in home.image.all %}
+                                        {% thumbnail image.image "300x200" crop='center' as im %}
+                                            <img src="{{ im.url }}" alt="{{ home.address }}" class="gallery-image">
+                                        {% endthumbnail %}
+                                    {% endfor %}
+
                                 </div>
                             </div>
                         </div>
@@ -73,7 +72,7 @@
                                     <span class="ion-money">$</span>
                                 </div>
                                 <div class="card-title-c align-self-center">
-                                    <h5 class="title-c">15000</h5>
+                                    <h5 class="title-c">{{ home.price|floatformat:'-3g' }}</h5>
                                 </div>
                             </div>
                         </div>
@@ -89,37 +88,33 @@
                                 <ul class="list">
                                     <li class="d-flex justify-content-between">
                                         <strong>Property ID:</strong>
-                                        <span>1134</span>
+                                        <span>{{ home.id }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Location:</strong>
-                                        <span>Chicago, IL 606543</span>
-                                    </li>
-                                    <li class="d-flex justify-content-between">
-                                        <strong>Property Type:</strong>
-                                        <span>House</span>
+                                        <span>{{ home.country }} / {{ home.city }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Status:</strong>
-                                        <span>Sale</span>
+                                        <span>{{ home.is_active }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Area:</strong>
-                                        <span>340m
+                                        <span>{{ home.meter }}m
                         <sup>2</sup>
                       </span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Beds:</strong>
-                                        <span>4</span>
+                                        <span>{{ home.beds }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Baths:</strong>
-                                        <span>2</span>
+                                        <span>{{ home.baths }}</span>
                                     </li>
                                     <li class="d-flex justify-content-between">
                                         <strong>Garage:</strong>
-                                        <span>1</span>
+                                        <span>{{ home.garages }}</span>
                                     </li>
                                 </ul>
                             </div>
@@ -135,42 +130,10 @@
                         </div>
                         <div class="property-description">
                             <p class="description color-text-a">
-                                Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia
-                                Curae; Donec velit
-                                neque, auctor sit amet
-                                aliquam vel, ullamcorper sit amet ligula. Cras ultricies ligula sed magna dictum
-                                porta.
-                                Curabitur aliquet quam id dui posuere blandit. Mauris blandit aliquet elit, eget
-                                tincidunt
-                                nibh pulvinar quam id dui posuere blandit.
-                            </p>
-                            <p class="description color-text-a no-margin">
-                                Curabitur arcu erat, accumsan id imperdiet et, porttitor at sem. Donec rutrum congue
-                                leo eget
-                                malesuada. Quisque velit nisi,
-                                pretium ut lacinia in, elementum id enim. Donec sollicitudin molestie malesuada.
+                                {{ home.description }}
                             </p>
                         </div>
-                        <div class="row section-t3">
-                            <div class="col-sm-12">
-                                <div class="title-box-d">
-                                    <h3 class="title-d">Amenities</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="amenities-list color-text-a">
-                            <ul class="list-a no-margin">
-                                <li>Balcony</li>
-                                <li>Outdoor Kitchen</li>
-                                <li>Cable Tv</li>
-                                <li>Deck</li>
-                                <li>Tennis Courts</li>
-                                <li>Internet</li>
-                                <li>Parking</li>
-                                <li>Sun Room</li>
-                                <li>Concrete Flooring</li>
-                            </ul>
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -218,34 +181,47 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6 col-lg-4">
-                        <img src="/static/img/agent-4.jpg" alt="" class="img-fluid">
+                        {% if home.realestate %}
+                            <img src="{{ home.realestate.agent_set.first.agent.image.url }}" alt="" class="img-fluid">
+                        {% endif %}
+                        {% if home.owner.image %}
+                        	<img src="{{ home.owner.image.url }}" alt="" class="img-fluid">
+                        {% endif %}
                     </div>
                     <div class="col-md-6 col-lg-4">
                         <div class="property-agent">
-                            <h4 class="title-agent">Anabella Geller</h4>
-                            <p class="color-text-a">
-                                Nulla porttitor accumsan tincidunt. Vestibulum ac diam sit amet quam vehicula
-                                elementum sed sit amet
-                                dui. Quisque velit nisi,
-                                pretium ut lacinia in, elementum id enim.
-                            </p>
+                            {% if home.realestate %}
+                                <h4 class="title-agent">{{ home.realestate.agent_set.first.agent.username }}</h4>
+                            {% else %}
+                                <h4 class="title-agent">{{ home.owner.username }}</h4>
+                            {% endif %}
+
                             <ul class="list-unstyled">
                                 <li class="d-flex justify-content-between">
-                                    <strong>Phone:</strong>
-                                    <span class="color-text-a">(222) 4568932</span>
+
+                                    {% if home.realestate %}
+                                        <strong> Agent Phone:</strong>
+                                        <span class="color-text-a">{{ home.realestate.agent_set.first.agent.phone }}</span>
+                                        <strong> RealEstate Phone:</strong>
+                                        <span class="color-text-a">{{ home.realestate.phone }}</span>
+                                    {% else %}
+                                        <strong> Owner Phone:</strong>
+                                        <span class="color-text-a">{{ home.owner.phone }}</span>
+                                    {% endif %}
                                 </li>
+
                                 <li class="d-flex justify-content-between">
-                                    <strong>Mobile:</strong>
-                                    <span class="color-text-a">777 287 378 737</span>
+                                    {% if home.realestate %}
+                                        <strong>Agent Email:</strong>
+                                        <span class="color-text-a">{{ home.realestate.agent_set.first.agent.email }}</span>
+                                        <strong>RealEstate Email:</strong>
+                                        <span class="color-text-a">{{ home.realestate.email }}</span>
+                                    {% else %}
+                                        <strong>Owner Email:</strong>
+                                        <span class="color-text-a">{{ home.owner.email }}</span>
+                                    {% endif %}
                                 </li>
-                                <li class="d-flex justify-content-between">
-                                    <strong>Email:</strong>
-                                    <span class="color-text-a">annabella@example.com</span>
-                                </li>
-                                <li class="d-flex justify-content-between">
-                                    <strong>Skype:</strong>
-                                    <span class="color-text-a">Annabela.ge</span>
-                                </li>
+
                             </ul>
                             <div class="socials-a">
                                 <ul class="list-inline">
@@ -280,26 +256,12 @@
                     </div>
                     <div class="col-md-12 col-lg-4">
                         <div class="property-contact">
-                            <form class="form-a">
+                            <form class="form-a" method="post" action="{% url 'single-property' slug=home.slug%}">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-md-12 mb-1">
                                         <div class="form-group">
-                                            <input type="text" class="form-control form-control-lg form-control-a"
-                                                   id="inputName"
-                                                   placeholder="Name *" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-1">
-                                        <div class="form-group">
-                                            <input type="email" class="form-control form-control-lg form-control-a"
-                                                   id="inputEmail1"
-                                                   placeholder="Email *" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12 mb-1">
-                                        <div class="form-group">
-                        <textarea id="textMessage" class="form-control" placeholder="Comment *" name="message" cols="45"
-                                  rows="8" required></textarea>
+                                            {{ form.as_p }}
                                         </div>
                                     </div>
                                     <div class="col-md-12">
