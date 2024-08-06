@@ -27,6 +27,9 @@ class RealEstate(models.Model):
     country = models.CharField(max_length=150, null=False, verbose_name="Country")
     is_guarantee = models.BooleanField(default=True, verbose_name="Guarantee")
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    phone = models.CharField(verbose_name="Phone", max_length=11, null=True, blank=True)
+    description = models.CharField(verbose_name="Description", max_length=250, null=True, blank=True)
+    email = models.EmailField(verbose_name="Email", max_length=254, null=True, blank=True)
 
     def __str__(self):
         return f"{self.ceo.username} -> {self.city}"

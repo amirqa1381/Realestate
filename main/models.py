@@ -125,3 +125,18 @@ class Blog(models.Model):
 
     def __str__(self):
         return f"{self.author.username} -> {self.title}"
+
+
+class PropertyRequest(models.Model):
+    """
+    this class is for requesting the property and keep the information of the user that send some mail
+    and make connect between the different owner and bidder
+    """
+    home = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Home', related_name='property_request')
+    name = models.CharField(max_length=100, verbose_name='Name')
+    email = models.EmailField(verbose_name='Email', max_length=150)
+    message = models.TextField(verbose_name='Message')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created At')
+
+    def __str__(self):
+        return self.name
