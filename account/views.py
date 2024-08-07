@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import logging
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.contrib.auth.views import LoginView
 from .forms import RegistrationForm, LoginForm, ContactForm
 from django.urls import reverse_lazy
@@ -72,3 +72,13 @@ class ContactView(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, 'account/contact.html', context)
+
+
+class UserPanelView(LoginRequiredMixin, TemplateView):
+    """
+    this class is for a moment that user want to fo to the accounts page and see its info or maybe
+    he/she wants to change some info , so we should make a page for himself/herself when wants to do that
+    and here i want to use the TemplateView for showing the template to the user
+    """
+    template_name = 'account/user_panel.html'
+
