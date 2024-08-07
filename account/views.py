@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 import logging
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 from django.contrib.auth.views import LoginView
-from .forms import RegistrationForm, LoginForm, ContactForm
+from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import HttpRequest
@@ -72,3 +72,32 @@ class ContactView(LoginRequiredMixin, View):
             'form': form
         }
         return render(request, 'account/contact.html', context)
+
+
+class UserPanelView(LoginRequiredMixin, TemplateView):
+    """
+    this class is for a moment that user want to fo to the accounts page and see its info or maybe
+    he/she wants to change some info , so we should make a page for himself/herself when wants to do that
+    and here i want to use the TemplateView for showing the template to the user
+    """
+    template_name = 'account/user_panel.html'
+
+
+class UserChangeInfoView(LoginRequiredMixin, FormView):
+    """
+    this class is for a time that user wants to insert or change some information of it
+    so when user wants to edit some of that information can go this route and handle that
+    """
+    form_class = UserChangeInfoForm
+    template_name = 'account/user_info.html'
+    success_url = reverse_lazy('user_info')
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['instance'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
+
