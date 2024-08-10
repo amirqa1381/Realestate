@@ -2,11 +2,13 @@ from django.shortcuts import render, redirect
 import logging
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.views import LoginView
-from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm
+from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm, UserPasswordChangeForm
 from django.urls import reverse_lazy
 from django.views import View
-from django.http import HttpRequest
+from django.http import HttpRequest, HttpResponseRedirect
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth import update_session_auth_hash
 
 logger = logging.getLogger(__name__)
 
@@ -91,7 +93,7 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
     form_class = UserChangeInfoForm
     template_name = 'account/user_info.html'
     success_url = reverse_lazy('user_info')
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['instance'] = self.request.user
@@ -100,4 +102,11 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form.save()
         return super().form_valid(form)
+
+
+class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    form_class = UserPasswordChangeForm
+    template_name = 'account/changing_password.html'
+    success_url = reverse_lazy('user_panel')
+
 
