@@ -97,12 +97,9 @@ class UserPasswordChangeForm(PasswordChangeForm):
     this class is for the changing the user password
     """
 
-    class Meta:
-        model = User
-        fields = ['old_password', 'new_password1', 'new_password2']
-
     def __init__(self, *args, **kwargs):
-        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
+        self.user = kwargs.pop('user')
+        super(UserPasswordChangeForm, self).__init__(self.user, *args, **kwargs)
         # the first way for adding attrs to the form is with buil_attrs and when we can use it that we
         # want to keep the exciting attrs that we pass to it in the past
         # custom_attrs = {
@@ -112,6 +109,6 @@ class UserPasswordChangeForm(PasswordChangeForm):
         # self.fields['old_password'].widget.attrs.update(attrs)
 
         # but in here we don't need to keep anything and we want simplicity here
-        self.fields['old_password'].widget.attrs = {'class': 'form-control'}
-        self.fields['new_password1'].widget.attrs = {'class': 'form-control'}
-        self.fields['new_password2'].widget.attrs = {'class': 'form-control'}
+        self.fields['old_password'].widget.attrs = {'class': 'form-control', 'autocomplete': 'off'}
+        self.fields['new_password1'].widget.attrs = {'class': 'form-control', 'autocomplete': 'new-password'}
+        self.fields['new_password2'].widget.attrs = {'class': 'form-control', 'autocomplete': 'new-password'}
