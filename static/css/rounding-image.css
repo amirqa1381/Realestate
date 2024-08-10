@@ -1,0 +1,8 @@
+.user-image img {
+    width: 200px; /* or your desired size */
+    height: 200px; /* or your desired size */
+    border-radius: 50%; /* Makes the image circular */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
+    margin-left: 60px;
+    margin-top: 20px;
+}
