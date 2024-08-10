@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 import logging
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.views import LoginView
-from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm
+from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm, UserPasswordChangeForm
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import HttpRequest
@@ -91,7 +91,7 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
     form_class = UserChangeInfoForm
     template_name = 'account/user_info.html'
     success_url = reverse_lazy('user_info')
-    
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['instance'] = self.request.user
@@ -101,3 +101,20 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
         form.save()
         return super().form_valid(form)
 
+
+class UserChangePasswordFormView(LoginRequiredMixin, FormView):
+    """
+    this view is for handling the changing the user password
+    """
+    form_class = UserPasswordChangeForm
+    template_name = 'account/changing_password.html'
+    success_url = reverse_lazy('user_panel')
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
