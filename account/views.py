@@ -2,13 +2,19 @@ from django.shortcuts import render, redirect
 import logging
 from django.views.generic import FormView, TemplateView
 from django.contrib.auth.views import LoginView
-from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm, UserPasswordChangeForm
+from .forms import (RegistrationForm,
+                    LoginForm,
+                    ContactForm,
+                    UserChangeInfoForm,
+                    UserPasswordChangeForm,
+                    WorkProfileInfoForm,
+                )
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth.forms import PasswordChangeForm
+
 
 logger = logging.getLogger(__name__)
 
@@ -115,4 +121,18 @@ class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     success_url = reverse_lazy('user_panel')
 
 
+class WorkProfileInfoView(LoginRequiredMixin, FormView):
+    """
+    this class is for implementing the view for getting the work info and decision of the user for
+    inserting the advertisement to the system
+    """
+    form_class = WorkProfileInfoForm
+    template_name = 'account/user_profile_for_work.html'
+    success_url = reverse_lazy('index')
+    
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.user = self.request.user
+        form.save()
+        return super().form_valid(form)
 
