@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
-from account.models import User, Contact
+from account.models import User, Contact, ProfileOfSellerOrRealEstate
 
 
 class RegistrationForm(UserCreationForm):
@@ -104,3 +104,19 @@ class UserPasswordChangeForm(PasswordChangeForm):
                                     label='Confirm New Password')
 
 
+class WorkProfileInfoForm(forms.ModelForm):
+    """
+    this class is for the form that get the user work info and save to the database
+    each user that wants to add advertisement to the site should fill this form
+    """
+
+    class Meta:
+        model = ProfileOfSellerOrRealEstate
+        fields = ['job_description', 'home_phone', 'birth_year', 'owner_or_agent']
+
+        widgets = {
+            'job_description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Insert your Job....'}),
+            'home_phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'birth_year': forms.DateInput(attrs={'class': 'form-control'}),
+            'owner_or_agent': forms.Select(attrs={'class': 'form-select'})
+        }
