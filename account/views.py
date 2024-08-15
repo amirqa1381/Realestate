@@ -5,10 +5,10 @@ from django.contrib.auth.views import LoginView
 from .forms import RegistrationForm, LoginForm, ContactForm, UserChangeInfoForm, UserPasswordChangeForm
 from django.urls import reverse_lazy
 from django.views import View
-from django.http import HttpRequest, HttpResponseRedirect
+from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import PasswordChangeForm
 
 logger = logging.getLogger(__name__)
 
@@ -108,5 +108,6 @@ class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = UserPasswordChangeForm
     template_name = 'account/changing_password.html'
     success_url = reverse_lazy('user_panel')
+
 
 
