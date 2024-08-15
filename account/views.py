@@ -105,6 +105,11 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
 
 
 class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
+    """
+    this class is for the changing password and when a user know the current password and wants
+    to change it  , can go to this page and change the current password, but when forgot the password should
+    try another way and go to the forgotten password and change it
+    """
     form_class = UserPasswordChangeForm
     template_name = 'account/changing_password.html'
     success_url = reverse_lazy('user_panel')
