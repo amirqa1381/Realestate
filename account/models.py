@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.core.validators import MinLengthValidator, MaxLengthValidator
 
 
 class User(AbstractUser):
@@ -62,3 +63,20 @@ class Contact(models.Model):
 
     def __str__(self):
         return self.subject
+
+
+class ProfileOfSellerOrRealEstate(models.Model):
+    JOB_CHOICES = {
+        'OW': 'Owner',
+        'AG': 'Agent'
+    }
+
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='User', related_name='profile')
+    owner_or_agent = models.CharField(choices=JOB_CHOICES, verbose_name='Owner Or Agent', max_length=10)
+    job_description = models.TextField(verbose_name='Job Description')
+    home_phone = models.CharField(max_length=7, verbose_name='Home Phone',
+                                  validators=[MinLengthValidator(7), MaxLengthValidator(7)])
+    birth_year = models.DateField(verbose_name='Birth Year')
+
+    def __str__(self):
+        return self.user.username
