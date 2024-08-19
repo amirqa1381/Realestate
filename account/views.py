@@ -7,14 +7,13 @@ from .forms import (RegistrationForm,
                     ContactForm,
                     UserChangeInfoForm,
                     UserPasswordChangeForm,
-                    WorkProfileInfoForm,
-                )
+WorkProfileInfoForm
+                    )
 from django.urls import reverse_lazy
 from django.views import View
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-
 
 logger = logging.getLogger(__name__)
 
@@ -112,9 +111,9 @@ class UserChangeInfoView(LoginRequiredMixin, FormView):
 
 class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     """
-    this class is for the changing password and when a user know the current password and wants
-    to change it  , can go to this page and change the current password, but when forgot the password should
-    try another way and go to the forgotten password and change it
+        this class is for the changing password and when a user know the current password and wants
+        to change it  , can go to this page and change the current password, but when forgot the password should
+        try another way and go to the forgotten password and change it
     """
     form_class = UserPasswordChangeForm
     template_name = 'account/changing_password.html'
@@ -129,10 +128,9 @@ class WorkProfileInfoView(LoginRequiredMixin, FormView):
     form_class = WorkProfileInfoForm
     template_name = 'account/user_profile_for_work.html'
     success_url = reverse_lazy('index')
-    
+
     def form_valid(self, form):
         form = form.save(commit=False)
         form.user = self.request.user
         form.save()
         return super().form_valid(form)
-
