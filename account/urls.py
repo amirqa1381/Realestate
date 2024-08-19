@@ -4,10 +4,12 @@ from .views import (UserRegistrationView,
                     ContactView,
                     UserPanelView,
                     UserChangeInfoView,
-                    UserPasswordChangeView
+                    UserPasswordChangeView,
+                    WorkProfileInfoView
                     )
 from django.contrib.auth.views import LogoutView
-from django.contrib.auth import views
+
+
 urlpatterns = [
     path('register/', UserRegistrationView.as_view(), name='register'),
     path('login/', UserLoginView.as_view(), name='login'),
@@ -16,4 +18,5 @@ urlpatterns = [
     path('user-panel/', UserPanelView.as_view(), name='user_panel'),
     path('user-info/', UserChangeInfoView.as_view(), name='user_info'),
     path('user-change-password/', UserPasswordChangeView.as_view(), name='user_change_password'),
+    path('work-profile/', WorkProfileInfoView.as_view(), name='work_profile'),
 ]
