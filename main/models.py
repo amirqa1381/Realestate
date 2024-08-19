@@ -49,6 +49,8 @@ class Sell(models.Model):
                                related_name='sell_seller')
     shopper = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Shopper',
                                 related_name='sell_shopper')
+    property = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Property', related_name='sell_property',
+                                 null=True)
     final_price = models.FloatField(verbose_name='Final Price')
     sell_code = models.IntegerField(verbose_name='Sell Code')
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
@@ -74,6 +76,8 @@ class Rent(models.Model):
     """
     landlord = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='LandLord', related_name='rent_landlord')
     tenant = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Tenant', related_name='rent_tenant')
+    property = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Property', related_name='rent_property',
+                                 null=True)
     final_price = models.FloatField(verbose_name='Final Price')
     rental_start_date = models.DateField(verbose_name='Rental Start Date')
     rental_end_date = models.DateField(verbose_name='Rental End Date')
