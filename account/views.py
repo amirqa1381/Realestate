@@ -132,5 +132,6 @@ class WorkProfileInfoView(LoginRequiredMixin, FormView):
     def form_valid(self, form):
         form = form.save(commit=False)
         form.user = self.request.user
+        form.completed = True
         form.save()
         return super().form_valid(form)
