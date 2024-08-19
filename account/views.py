@@ -7,7 +7,7 @@ from .forms import (RegistrationForm,
                     ContactForm,
                     UserChangeInfoForm,
                     UserPasswordChangeForm,
-WorkProfileInfoForm
+                    WorkProfileInfoForm
                     )
 from django.urls import reverse_lazy
 from django.views import View
