@@ -1,0 +1,22 @@
+{% extends 'master.html' %}
+
+{% block title %}
+    Selling Form
+{% endblock %}
+
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <form action="{% url 'property_sell' %}" method="post" style="margin-top: 10rem">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        {{ form.as_p }}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
