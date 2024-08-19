@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
-from account.models import User, Contact
+from account.models import User, Contact, ProfileOfSellerOrRealEstate
 
 
 class RegistrationForm(UserCreationForm):
@@ -96,19 +96,27 @@ class UserPasswordChangeForm(PasswordChangeForm):
     """
     this class is for the changing the user password
     """
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}),
+                                   label='Current Password')
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}),
+                                    label='New Password')
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'type': 'password'}),
+                                    label='Confirm New Password')
 
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super(UserPasswordChangeForm, self).__init__(self.user, *args, **kwargs)
-        # the first way for adding attrs to the form is with buil_attrs and when we can use it that we
-        # want to keep the exciting attrs that we pass to it in the past
-        # custom_attrs = {
-        #     'class': 'form-control'
-        # }
-        # attrs = self.fields['old_password'].widget.build_attrs(custom_attrs)
-        # self.fields['old_password'].widget.attrs.update(attrs)
 
-        # but in here we don't need to keep anything and we want simplicity here
-        self.fields['old_password'].widget.attrs = {'class': 'form-control', 'autocomplete': 'off'}
-        self.fields['new_password1'].widget.attrs = {'class': 'form-control', 'autocomplete': 'new-password'}
-        self.fields['new_password2'].widget.attrs = {'class': 'form-control', 'autocomplete': 'new-password'}
+class WorkProfileInfoForm(forms.ModelForm):
+    """
+    this class is for the form that get the user work info and save to the database
+    each user that wants to add advertisement to the site should fill this form
+    """
+
+    class Meta:
+        model = ProfileOfSellerOrRealEstate
+        fields = ['job_description', 'home_phone', 'birth_year', 'owner_or_agent']
+
+        widgets = {
+            'job_description': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Insert your Job....'}),
+            'home_phone': forms.TextInput(attrs={'class': 'form-control'}),
+            'birth_year': forms.DateInput(attrs={'class': 'form-control'}),
+            'owner_or_agent': forms.Select(attrs={'class': 'form-select'})
+        }
