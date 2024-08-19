@@ -77,6 +77,7 @@ class ProfileOfSellerOrRealEstate(models.Model):
     home_phone = models.CharField(max_length=7, verbose_name='Home Phone',
                                   validators=[MinLengthValidator(7), MaxLengthValidator(7)])
     birth_year = models.DateField(verbose_name='Birth Year')
+    completed = models.BooleanField(default=False, verbose_name='Completed')
 
     def __str__(self):
         return self.user.username

@@ -5,7 +5,7 @@ from .models import Home, Blog
 from account.models import Agent
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PropertyRequestForm
+from .forms import PropertyRequestForm, PropertySellForm
 
 
 class IndexView(View):
@@ -105,3 +105,23 @@ class SinglePropertyView(LoginRequiredMixin, View):
             'form': form,
         }
         return render(request, 'main/single_property.html', context)
+
+
+class PropertySellView(LoginRequiredMixin, View):
+    def get(self, request: HttpRequest):
+        """
+        this method is for the handling the get method that user send to the server and we handle that request with
+        this method
+        """
+        form = PropertySellForm()
+        context = {
+            'form': form,
+        }
+        return render(request, 'main/property_sell_page.html', context)
+
+    def post(self, request: HttpRequest):
+        """
+        this method is for the handling the get method that user send to the server and we handle that request with
+        this method
+        """
+        pass

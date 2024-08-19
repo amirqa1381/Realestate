@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import User, RealEstate, Agent
+from .models import User, RealEstate, Agent, ProfileOfSellerOrRealEstate
 
 
 @admin.register(User)
@@ -44,3 +44,4 @@ class RealEstateAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Agent)
+admin.site.register(ProfileOfSellerOrRealEstate)

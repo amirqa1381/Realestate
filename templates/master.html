@@ -174,7 +174,11 @@
                         {% if request.user.is_authenticated %}
                         	<a class="dropdown-item" href="{% url 'user_panel' %}">User Panel</a>
                         {% endif %} 
-                        <a class="dropdown-item" href="blog-single.html">Blog Single</a>
+                        {% with user_panel=request.user.profile.first%}
+                        	{% if user_panel and user_panel.completed %}
+                        		<a class="dropdown-item" href="{% url 'work_profile' %}">Selling</a>
+                        	{% endif %}
+                        {% endwith %}
                         <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
                         <a class="dropdown-item" href="agent-single.html">Agent Single</a>
                     </div>

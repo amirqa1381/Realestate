@@ -1,5 +1,5 @@
 from django import forms
-from .models import PropertyRequest
+from .models import PropertyRequest, Home
 
 
 class PropertyRequestForm(forms.ModelForm):
@@ -16,4 +16,26 @@ class PropertyRequestForm(forms.ModelForm):
             'name': '',
             'email': '',
             'message': ''
+        }
+
+
+class PropertySellForm(forms.ModelForm):
+    class Meta:
+        model = Home
+        fields = ['address', 'meter', 'city', 'country', 'postal_code', 'price', 'description', 'floor', 'beds',
+                  'baths', 'garages', 'year_built']
+
+        widgets = {
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'meter': forms.NumberInput(attrs={'class': 'form-control'}),
+            'city': forms.TextInput(attrs={'class': 'form-control'}),
+            'country': forms.TextInput(attrs={'class': 'form-control'}),
+            'postal_code': forms.TextInput(attrs={'class': 'form-control'}),
+            'price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'floor': forms.NumberInput(attrs={'class': 'form-control'}),
+            'beds': forms.NumberInput(attrs={'class': 'form-control'}),
+            'baths': forms.NumberInput(attrs={'class': 'form-control'}),
+            'garages': forms.NumberInput(attrs={'class': 'form-control'}),
+            'year_built': forms.DateInput(attrs={'class': 'form-control'}),
         }

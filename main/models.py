@@ -1,7 +1,7 @@
 from django.db import models
 from django.core.validators import MinLengthValidator, MinValueValidator
 from django.utils.text import slugify
-
+from django.utils.timezone import now
 from account.models import User
 from account.models import RealEstate
 from django.core.exceptions import ValidationError
@@ -13,7 +13,7 @@ class Home(models.Model):
     """
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='home')
     address = models.CharField(max_length=400, verbose_name='Address', validators=[MinLengthValidator(10)])
-    meter = models.IntegerField(verbose_name='Meter')
+    meter = models.PositiveIntegerField(verbose_name='Meter')
     city = models.CharField(max_length=100, verbose_name='City')
     country = models.CharField(max_length=100, verbose_name='Country')
     postal_code = models.CharField(max_length=100, verbose_name='Postal Code')
@@ -26,7 +26,7 @@ class Home(models.Model):
     garages = models.PositiveIntegerField(verbose_name='Garages', default=1)
     realestate = models.ForeignKey(RealEstate, on_delete=models.CASCADE, verbose_name='RealEstate', related_name='home',
                                    null=True, blank=True)
-    year_built = models.DateField(verbose_name='Year Built', default='2024-01-01')
+    year_built = models.DateField(verbose_name='Year Built', default=now)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at', blank=True, null=True)
     slug = models.SlugField(max_length=150, verbose_name='Slug', unique=True, blank=True, null=True)
 
@@ -49,6 +49,8 @@ class Sell(models.Model):
                                related_name='sell_seller')
     shopper = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name='Shopper',
                                 related_name='sell_shopper')
+    property = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Property', related_name='sell_property',
+                                 null=True)
     final_price = models.FloatField(verbose_name='Final Price')
     sell_code = models.IntegerField(verbose_name='Sell Code')
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
@@ -74,6 +76,8 @@ class Rent(models.Model):
     """
     landlord = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='LandLord', related_name='rent_landlord')
     tenant = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Tenant', related_name='rent_tenant')
+    property = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Property', related_name='rent_property',
+                                 null=True)
     final_price = models.FloatField(verbose_name='Final Price')
     rental_start_date = models.DateField(verbose_name='Rental Start Date')
     rental_end_date = models.DateField(verbose_name='Rental End Date')
