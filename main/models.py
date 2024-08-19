@@ -13,7 +13,7 @@ class Home(models.Model):
     """
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='home')
     address = models.CharField(max_length=400, verbose_name='Address', validators=[MinLengthValidator(10)])
-    meter = models.IntegerField(verbose_name='Meter')
+    meter = models.PositiveIntegerField(verbose_name='Meter')
     city = models.CharField(max_length=100, verbose_name='City')
     country = models.CharField(max_length=100, verbose_name='Country')
     postal_code = models.CharField(max_length=100, verbose_name='Postal Code')
