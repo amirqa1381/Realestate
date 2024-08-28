@@ -176,7 +176,9 @@
                         {% endif %} 
                         {% with user_panel=request.user.profile.first%}
                         	{% if user_panel and user_panel.completed %}
-                        		<a class="dropdown-item" href="{% url 'work_profile' %}">Selling</a>
+                        		<a class="dropdown-item" href="{% url 'property_sell' %}">Selling</a>
+                                {% else %}
+                                <a class="dropdown-item" href="{% url 'work_profile' %}">Selling</a>
                         	{% endif %}
                         {% endwith %}
                         <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
