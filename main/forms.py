@@ -20,21 +20,7 @@ class PropertyRequestForm(forms.ModelForm):
         }
 
 
-class HomeImagesForm(forms.ModelForm):
-    """
-    this is for the images of the homes and each home can have multiple images
-    """
-
-    class Meta:
-        model = HomeImages
-        fields = ['image', 'alt']
-        widgets = {
-            'image': forms.FileInput(attrs={'class': 'form-control'}),
-            'alt': forms.TextInput(attrs={'class': 'form-control'}),
-        }
-
-
-class PropertySellForm(forms.ModelForm):
+class HomeForm(forms.ModelForm):
     class Meta:
         model = Home
         fields = ['address', 'meter', 'city', 'country', 'postal_code', 'price', 'description', 'floor', 'beds',
@@ -56,4 +42,18 @@ class PropertySellForm(forms.ModelForm):
         }
 
 
-HomeImageFormSet = modelformset_factory(HomeImages, form=HomeImagesForm, extra=1, can_delete=True, min_num=1, max_num=10)
+class HomeImagesForm(forms.ModelForm):
+    """
+    this is for the images of the homes and each home can have multiple images
+    """
+
+    class Meta:
+        model = HomeImages
+        fields = ['image', 'alt']
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'alt': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+HomeImageFormSet = modelformset_factory(HomeImages, form=HomeImagesForm, extra=2, can_delete=True)
