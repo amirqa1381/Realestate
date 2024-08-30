@@ -35,7 +35,7 @@ class RealEstate(models.Model):
     email = models.EmailField(verbose_name="Email", max_length=254, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.ceo.username} -> {self.city}"
+        return self.Name
 
 
 class Agent(models.Model):
