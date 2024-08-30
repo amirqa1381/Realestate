@@ -9,10 +9,16 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                <form action="{% url 'property_sell' %}" method="post" style="margin-top: 10rem">
+                <form action="{% url 'property_sell' %}" method="post" style="margin-top: 10rem"
+                      enctype="multipart/form-data">
                     {% csrf_token %}
                     <div class="mb-3">
                         {{ form.as_p }}
+                        {{ form_sets.management_form }}
+                        {% for form_set in form_sets %}
+                            {{ form_set }}
+                        {% endfor %}
+
                     </div>
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </form>
