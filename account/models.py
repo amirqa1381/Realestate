@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -23,6 +24,7 @@ class RealEstate(models.Model):
     """
     ceo = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, verbose_name="CEO",
                             related_name='real_estate_ceo')
+    Name = models.CharField(max_length=150, verbose_name="Name")
     address = models.CharField(max_length=350, verbose_name="Address")
     city = models.CharField(max_length=150, null=False, verbose_name="City")
     country = models.CharField(max_length=150, null=False, verbose_name="Country")
@@ -33,7 +35,7 @@ class RealEstate(models.Model):
     email = models.EmailField(verbose_name="Email", max_length=254, null=True, blank=True)
 
     def __str__(self):
-        return f"{self.ceo.username} -> {self.city}"
+        return self.Name
 
 
 class Agent(models.Model):
@@ -44,6 +46,9 @@ class Agent(models.Model):
     agent = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Agent', related_name='agent')
     realEstate = models.ForeignKey(RealEstate, on_delete=models.SET_NULL, null=True, blank=True,
                                    verbose_name='RealEstate')
+    joined_date = models.DateTimeField(auto_now_add=True, verbose_name="Joined date")
+    working_history = models.TextField(verbose_name="Working history")
+    working_year_number = models.IntegerField(verbose_name="Working year number")
     is_active = models.BooleanField(default=True, verbose_name='Is Active')
 
     def __str__(self):

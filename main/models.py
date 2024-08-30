@@ -96,7 +96,7 @@ class Rent(models.Model):
 
 class HomeImages(models.Model):
     """
-    this class is for images of the home , i made this class because it may have multiple images
+    this class is for images of the home , I made this class because it may have multiple images
     instead of one image
     """
     home = models.ForeignKey(Home, on_delete=models.CASCADE, verbose_name='Home', related_name='image')
@@ -110,7 +110,7 @@ class HomeImages(models.Model):
 
 class Blog(models.Model):
     """
-    this is a class that i've written for saving and showing the news of the site,
+    this is a class that I've written for saving and showing the news of the site,
     and it'll keep the information of the news
     """
     NEWS_CATEGORY = {

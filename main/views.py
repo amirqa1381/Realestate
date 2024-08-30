@@ -1,11 +1,12 @@
+from django.forms.formsets import ManagementForm
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpRequest
 from django.views import View
-from .models import Home, Blog
+from .models import Home, Blog, HomeImages
 from account.models import Agent
 from django.views.generic import TemplateView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import PropertyRequestForm, PropertySellForm
+from .forms import PropertyRequestForm, HomeForm, HomeImageFormSet
 
 
 class IndexView(View):
@@ -110,18 +111,37 @@ class SinglePropertyView(LoginRequiredMixin, View):
 class PropertySellView(LoginRequiredMixin, View):
     def get(self, request: HttpRequest):
         """
-        this method is for the handling the get method that user send to the server and we handle that request with
+        this method is for the handling the get method that user send to the server, and we handle that request with
         this method
         """
-        form = PropertySellForm()
+        form = HomeForm()
+        form_sets = HomeImageFormSet(queryset=HomeImages.objects.none(), prefix='home_images')
         context = {
             'form': form,
+            'form_sets': form_sets,
         }
         return render(request, 'main/property_sell_page.html', context)
 
     def post(self, request: HttpRequest):
-        """
-        this method is for the handling the get method that user send to the server and we handle that request with
-        this method
-        """
-        pass
+        form = HomeForm(request.POST)
+        form_sets = HomeImageFormSet(request.POST, request.FILES, prefix="home_images")
+        form_sets.management_form = ManagementForm(request.POST, prefix="home_images")
+        print(form_sets.errors)
+        print(form_sets.non_form_errors())
+        print(form_sets.management_form.data)
+        if form.is_valid() and form_sets.is_valid():  # Validate the formset as a whole
+            home = form.save(commit=False)
+            home.owner = request.user
+            home.is_active = True
+            home.save()
+            instances = form_sets.save(commit=False)  # Get the instances from the formset
+            for instance in instances:
+                instance.home = home
+                instance.save()
+            return redirect('single-property', slug=home.slug)
+        else:
+            context = {
+                'form': form,
+                'form_sets': form_sets,
+            }
+            return render(request, 'main/property_sell_page.html', context)

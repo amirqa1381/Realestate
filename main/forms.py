@@ -1,5 +1,6 @@
 from django import forms
-from .models import PropertyRequest, Home
+from .models import PropertyRequest, Home, HomeImages
+from django.forms import modelformset_factory
 
 
 class PropertyRequestForm(forms.ModelForm):
@@ -19,7 +20,7 @@ class PropertyRequestForm(forms.ModelForm):
         }
 
 
-class PropertySellForm(forms.ModelForm):
+class HomeForm(forms.ModelForm):
     class Meta:
         model = Home
         fields = ['address', 'meter', 'city', 'country', 'postal_code', 'price', 'description', 'floor', 'beds',
@@ -39,3 +40,20 @@ class PropertySellForm(forms.ModelForm):
             'garages': forms.NumberInput(attrs={'class': 'form-control'}),
             'year_built': forms.DateInput(attrs={'class': 'form-control'}),
         }
+
+
+class HomeImagesForm(forms.ModelForm):
+    """
+    this is for the images of the homes and each home can have multiple images
+    """
+
+    class Meta:
+        model = HomeImages
+        fields = ['image', 'alt']
+        widgets = {
+            'image': forms.FileInput(attrs={'class': 'form-control'}),
+            'alt': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+
+HomeImageFormSet = modelformset_factory(HomeImages, form=HomeImagesForm, extra=2, can_delete=True)
