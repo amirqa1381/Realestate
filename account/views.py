@@ -7,7 +7,8 @@ from .forms import (RegistrationForm,
                     ContactForm,
                     UserChangeInfoForm,
                     UserPasswordChangeForm,
-                    WorkProfileInfoForm
+                    WorkProfileInfoForm,
+                    AgentRegistration
                     )
 from django.urls import reverse_lazy
 from django.views import View
@@ -135,3 +136,21 @@ class WorkProfileInfoView(LoginRequiredMixin, FormView):
         form.completed = True
         form.save()
         return super().form_valid(form)
+
+
+class AgentRegistrationView(LoginRequiredMixin, FormView):
+    """
+    this class is for a time that user is an agent and want to work in the site and work as agent in the site,
+    and we choose the agent for ourselves from these users
+    """
+    form_class = AgentRegistration
+    template_name = 'account/agent_registration.html'
+    success_url = reverse_lazy('index')
+    
+    def form_valid(self, form):
+        instance = form.save(commit=False)
+        instance.agent = self.request.user
+        instance.is_active = True
+        instance.save()
+        return super().form_valid(form)
+        

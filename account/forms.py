@@ -1,6 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm, PasswordChangeForm
-from account.models import User, Contact, ProfileOfSellerOrRealEstate
+from django.contrib.auth.forms import (UserCreationForm,
+                                       AuthenticationForm,
+                                       UserChangeForm,
+                                       PasswordChangeForm,
+                                       )
+from account.models import User, Contact, ProfileOfSellerOrRealEstate, Agent
 
 
 class RegistrationForm(UserCreationForm):
@@ -119,4 +123,19 @@ class WorkProfileInfoForm(forms.ModelForm):
             'home_phone': forms.TextInput(attrs={'class': 'form-control'}),
             'birth_year': forms.DateInput(attrs={'class': 'form-control'}),
             'owner_or_agent': forms.Select(attrs={'class': 'form-select'})
+        }
+
+
+class AgentRegistration(forms.ModelForm):
+    """
+    this is the class that is for the registration and here we create new agent when they register
+    """
+
+    class Meta:
+        model = Agent
+        fields = ['working_history', 'working_year_number', 'realEstate']
+        widgets = {
+            'working_history': forms.Textarea(attrs={'class': 'form-control'}),
+            'working_year_number': forms.NumberInput(attrs={'class': 'form-control'}),
+            'realEstate': forms.Select(attrs={'class': 'form-select'}),
         }
