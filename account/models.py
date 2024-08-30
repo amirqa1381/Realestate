@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator, MaxLengthValidator
+from django.utils import timezone
 
 
 class User(AbstractUser):
@@ -44,6 +45,9 @@ class Agent(models.Model):
     agent = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Agent', related_name='agent')
     realEstate = models.ForeignKey(RealEstate, on_delete=models.SET_NULL, null=True, blank=True,
                                    verbose_name='RealEstate')
+    joined_date = models.DateTimeField(auto_now_add=True, verbose_name="Joined date")
+    working_history = models.TextField(verbose_name="Working history")
+    working_year_number = models.IntegerField(verbose_name="Working year number")
     is_active = models.BooleanField(default=True, verbose_name='Is Active')
 
     def __str__(self):
