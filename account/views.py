@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 import logging
-from django.views.generic import FormView, TemplateView
+from django.views.generic import FormView, TemplateView, ListView
 from django.contrib.auth.views import LoginView
 from .forms import (RegistrationForm,
                     LoginForm,
@@ -15,6 +15,7 @@ from django.views import View
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
+from main.models import Home
 
 logger = logging.getLogger(__name__)
 
@@ -153,4 +154,13 @@ class AgentRegistrationView(LoginRequiredMixin, FormView):
         instance.is_active = True
         instance.save()
         return super().form_valid(form)
-        
+
+
+class UserRegisterProperty(LoginRequiredMixin, ListView):
+    """
+    this class is for showing the list of all property that user registered
+    """
+    template_name = "account/user_property.html"
+
+    def get_queryset(self):
+        return self.request.user.home.all()
