@@ -126,9 +126,6 @@ class PropertySellView(LoginRequiredMixin, View):
         form = HomeForm(request.POST)
         form_sets = HomeImageFormSet(request.POST, request.FILES, prefix="home_images")
         form_sets.management_form = ManagementForm(request.POST, prefix="home_images")
-        print(form_sets.errors)
-        print(form_sets.non_form_errors())
-        print(form_sets.management_form.data)
         if form.is_valid() and form_sets.is_valid():  # Validate the formset as a whole
             home = form.save(commit=False)
             home.owner = request.user
