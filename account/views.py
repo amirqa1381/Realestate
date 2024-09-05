@@ -1,3 +1,4 @@
+from django.forms.formsets import ManagementForm
 from django.shortcuts import render, redirect
 import logging
 from django.views.generic import FormView, TemplateView, ListView
@@ -15,7 +16,8 @@ from django.views import View
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from main.models import Home
+from main.models import Home, HomeImages
+from main.forms import HomeForm, HomeImageFormSet
 
 logger = logging.getLogger(__name__)
 
@@ -147,7 +149,7 @@ class AgentRegistrationView(LoginRequiredMixin, FormView):
     form_class = AgentRegistration
     template_name = 'account/agent_registration.html'
     success_url = reverse_lazy('index')
-    
+
     def form_valid(self, form):
         instance = form.save(commit=False)
         instance.agent = self.request.user
@@ -164,3 +166,40 @@ class UserRegisterProperty(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return self.request.user.home.all()
+
+
+class EditInfoOfUserProperty(LoginRequiredMixin, View):
+    """
+    this is a class that we have and its for modifying of the homes that current user registered
+    """
+
+    def get(self, request: HttpRequest, slug):
+        """
+        this is the get method, and it's for handling the get request that user sent to the endpoint
+        """
+        home_instance = Home.objects.get(owner=request.user, slug=slug)
+        form = HomeForm(instance=home_instance)
+        context = {
+            'form': form,
+            'home_instance': home_instance
+        }
+        return render(request, 'account/edit_user_property_page.html', context)
+
+    def post(self, request: HttpRequest, slug):
+        """
+        this is the post method, and it's for a time that user will change something in the database or change something
+        """
+        home_instance = Home.objects.get(owner=request.user, slug=slug)
+        form = HomeForm(request.POST, instance=home_instance)
+        if form.is_valid():
+            home = form.save(commit=False)
+            home.owner = request.user
+            home.is_active = True
+            home.save()
+            return redirect('edit_user_property', slug=slug)
+        else:
+            context = {
+                'form': form,
+                'home_instance': home_instance,
+            }
+            return render(request, 'account/edit_user_property_page.html', context)
