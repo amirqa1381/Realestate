@@ -11,6 +11,10 @@ class Home(models.Model):
     """
     this class is for home and save the info of it
     """
+    TYPES = [
+        ("RE", "Rent"),
+        ("SE", "Sell")
+    ]
     owner = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Owner', related_name='home')
     address = models.CharField(max_length=400, verbose_name='Address', validators=[MinLengthValidator(10)])
     meter = models.PositiveIntegerField(verbose_name='Meter')
@@ -29,6 +33,7 @@ class Home(models.Model):
     year_built = models.DateField(verbose_name='Year Built', default=now)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Created at', blank=True, null=True)
     slug = models.SlugField(max_length=150, verbose_name='Slug', unique=True, blank=True, null=True)
+    type = models.CharField(max_length=10, choices=TYPES, default="SE")
 
     def save(self, *args, **kwargs):
         self.slug = slugify(self.address_shorter())

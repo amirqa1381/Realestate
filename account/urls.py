@@ -6,7 +6,9 @@ from .views import (UserRegistrationView,
                     UserChangeInfoView,
                     UserPasswordChangeView,
                     WorkProfileInfoView,
-                    AgentRegistrationView
+                    AgentRegistrationView,
+                    UserRegisterProperty,
+                    EditInfoOfUserProperty
                     )
 from django.contrib.auth.views import LogoutView
 
@@ -21,4 +23,6 @@ urlpatterns = [
     path('user-change-password/', UserPasswordChangeView.as_view(), name='user_change_password'),
     path('work-profile/', WorkProfileInfoView.as_view(), name='work_profile'),
     path('agent-register/', AgentRegistrationView.as_view(), name='agent_register'),
+    path('user-register-property/', UserRegisterProperty.as_view(), name='user_register_property'),
+    path('edit-user-property/<slug:slug>/', EditInfoOfUserProperty.as_view(), name='edit_user_property')
 ]

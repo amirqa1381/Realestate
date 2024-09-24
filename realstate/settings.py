@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'main',
     'account',
     'repair',
+    'search',
 ]
 
 MIDDLEWARE = [
