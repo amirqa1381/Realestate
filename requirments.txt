@@ -1,0 +1,6 @@
+asgiref==3.8.1
+Django==5.1.2
+pillow==10.4.0
+setuptools==75.1.0
+sorl-thumbnail==12.11.0
+sqlparse==0.5.1
