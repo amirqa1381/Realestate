@@ -40,8 +40,7 @@
     </div>
     <span class="close-box-collapse right-boxed ion-ios-close"></span>
     <div class="box-collapse-wrap form">
-        <form class="form-a" method="post" action="{% url "search" %}">
-            {% csrf_token %}
+        <form class="form-a" method="get" action="{% url "search" %}">
             <div class="row">
                 <div class="col-md-12 mb-2">
                     <div class="form-group">
@@ -53,7 +52,7 @@
                     <div class="form-group">
                         <label for="Type">Type</label>
                         <select class="form-control form-control-lg form-control-a" id="Type" name="type">
-                            <option>All Type</option>
+                            <option></option>
                             <option>For Rent</option>
                             <option>For Sale</option>
                         </select>
@@ -63,7 +62,7 @@
                     <div class="form-group">
                         <label for="city">City</label>
                         <select class="form-control form-control-lg form-control-a" id="city" name="city">
-                            <option>All City</option>
+                            <option></option>
                             <option>Alabama</option>
                             <option>Arizona</option>
                             <option>California</option>
@@ -75,7 +74,7 @@
                     <div class="form-group">
                         <label for="bedrooms">Bedrooms</label>
                         <select class="form-control form-control-lg form-control-a" id="bedrooms" name="bed">
-                            <option>Any</option>
+                            <option></option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -86,7 +85,7 @@
                     <div class="form-group">
                         <label for="garages">Garages</label>
                         <select class="form-control form-control-lg form-control-a" id="garages" name="garage">
-                            <option>Any</option>
+                            <option></option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -98,7 +97,7 @@
                     <div class="form-group">
                         <label for="bathrooms">Bathrooms</label>
                         <select class="form-control form-control-lg form-control-a" id="bathrooms" name="bath">
-                            <option>Any</option>
+                            <option></option>
                             <option>1</option>
                             <option>2</option>
                             <option>3</option>
@@ -109,7 +108,7 @@
                     <div class="form-group">
                         <label for="price">Min Price</label>
                         <select class="form-control form-control-lg form-control-a" id="price" name="price">
-                            <option>Unlimite</option>
+                            <option></option>
                             <option>50,000</option>
                             <option>100,000</option>
                             <option>150,000</option>
@@ -193,7 +192,7 @@
                         {#                        <a class="nav-link" href="contact.html">LogOut</a>#}
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
-                            <input type="submit" class="nav-link logout-me" value="Logout">
+                            <input type="su bmit" class="nav-link logout-me" value="Logout">
                         </form>
                     </li>
                 {% endif %}
