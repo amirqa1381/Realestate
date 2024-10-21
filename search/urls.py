@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import serach_func
+from .views import search_func
 
 urlpatterns = [
-    path("", serach_func, name="search"),
+    path("", search_func, name="search"),
 ]

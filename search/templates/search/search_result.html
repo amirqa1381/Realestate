@@ -1,0 +1,27 @@
+{% extends "master.html" %}
+{% load thumbnail %}
+
+{% block title %}
+Search Result
+{% endblock%}
+
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        {% for result in results %}
+            <div class="card" style="width: 18rem; margin-top:10rem;">
+                {% if result.image.first %}
+                <img src="{{result.image.first.image.url}}" class="card-img-top" alt="{{result.image.first.alt}}">
+                {% endif %}
+                <div class="card-body">
+                <h5 class="card-title">{{result.address|truncatechars:10}}</h5>
+                <p class="card-text">{{result.description|truncatechars:90}}</p>
+                <a href="{% url "single-property" slug=result.slug%}" class="btn btn-primary">More...</a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock%}
