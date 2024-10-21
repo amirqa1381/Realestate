@@ -8,8 +8,9 @@ from django.db.models import Q
 
 
 def search_logic(q=None, type=None,city=None,bed=None,garage=None,bath=None):
+    results = Home.objects.all()
     if q:
-        results = Home.objects.filter(Q(address__icontains=q) | Q(city__icontains=q) | Q(country__icontains=q))
+        results = results.filter(Q(address__icontains=q) | Q(city__icontains=q) | Q(country__icontains=q))
     if type:
         results = results.filter(type=type)
     if city:
