@@ -1,7 +1,7 @@
 venv
 .idea/
 db.sqlite3
-
+.vscode
 Github has a great boilerplate .gitignore
 
 # Byte-compiled / optimized / DLL files
