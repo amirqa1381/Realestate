@@ -62,6 +62,9 @@
                         	{% endif %}
                         {% endwith %}
                         <a class="dropdown-item" href="{% url "agent_register" %}">Agents Reigstration</a>
+                        {% if request.user.ceo %}
+                        <a class="dropdown-item" href="{% url "realestate_register" %}">RealEsate Reigstration</a>
+                        {% endif %}
                     </div>
                 </li>
                 <li class="nav-item">

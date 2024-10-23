@@ -219,4 +219,4 @@ class RealEstateRegistration(LoginRequiredMixin, FormView):
         form.is_active = True
         form.save()
         return super().form_valid(form)
-    
+        
