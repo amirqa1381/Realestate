@@ -4,7 +4,7 @@ from django.contrib.auth.forms import (UserCreationForm,
                                        UserChangeForm,
                                        PasswordChangeForm,
                                        )
-from account.models import User, Contact, ProfileOfSellerOrRealEstate, Agent
+from account.models import User, Contact, ProfileOfSellerOrRealEstate, Agent, RealEstate
 
 
 class RegistrationForm(UserCreationForm):
@@ -139,3 +139,21 @@ class AgentRegistration(forms.ModelForm):
             'working_year_number': forms.NumberInput(attrs={'class': 'form-control'}),
             'realEstate': forms.Select(attrs={'class': 'form-select'}),
         }
+
+
+class RealestateRegistrationForm(forms.ModelForm):
+    """
+    this form is for the registration of the realestate company 
+    """
+    class Meta:
+        model = RealEstate
+        fields = ['Name', 'address', 'city', 'country', 'phone', 'description', 'email']
+        widgets = {
+            'Name' : forms.TextInput(attrs={'class': 'form-control'}),
+            'address' : forms.TextInput(attrs={'class':'form-control'}),
+            'city' : forms.TextInput(attrs={'class':'form-control'}),
+            'country' : forms.TextInput(attrs={'class':'form-control'}),
+            'phone': forms.TextInput(attrs={'class':'form-control', 'placeholder':'Optional'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'})
+        }   

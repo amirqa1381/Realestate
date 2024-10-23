@@ -8,7 +8,8 @@ from .forms import (RegistrationForm,
                     UserChangeInfoForm,
                     UserPasswordChangeForm,
                     WorkProfileInfoForm,
-                    AgentRegistration
+                    AgentRegistration,
+                    RealestateRegistrationForm,
                     )
 from django.urls import reverse_lazy
 from django.views import View
@@ -202,3 +203,20 @@ class EditInfoOfUserProperty(LoginRequiredMixin, View):
                 'home_instance': home_instance,
             }
             return render(request, 'account/edit_user_property_page.html', context)
+
+
+class RealEstateRegistration(LoginRequiredMixin, FormView):
+    """
+    this class is for registration the realestate and register the info of them
+    """
+    form_class = RealestateRegistrationForm
+    template_name = 'account/realestate_register.html'
+    success_url = reverse_lazy('index')
+    
+    def form_valid(self, form):
+        form = form.save(commit=False)
+        form.ceo = self.request.user
+        form.is_active = True
+        form.save()
+        return super().form_valid(form)
+    
