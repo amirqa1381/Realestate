@@ -1,4 +1,3 @@
-from django.forms.formsets import ManagementForm
 from django.shortcuts import render, redirect
 import logging
 from django.views.generic import FormView, TemplateView, ListView
@@ -16,8 +15,8 @@ from django.views import View
 from django.http import HttpRequest
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
-from main.models import Home, HomeImages
-from main.forms import HomeForm, HomeImageFormSet
+from main.models import Home
+from main.forms import HomeForm
 
 logger = logging.getLogger(__name__)
 

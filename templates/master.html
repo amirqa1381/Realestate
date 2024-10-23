@@ -82,11 +82,10 @@
                         	{% if user_panel and user_panel.completed %}
                         		<a class="dropdown-item" href="{% url 'property_sell' %}">Selling</a>
                                 {% else %}
-                                <a class="dropdown-item" href="{% url 'work_profile' %}">Selling</a>
+                                <a class="dropdown-item" href="{% url 'work_profile' %}">Complete Info Selling</a>
                         	{% endif %}
                         {% endwith %}
-                        <a class="dropdown-item" href="agents-grid.html">Agents Grid</a>
-                        <a class="dropdown-item" href="agent-single.html">Agent Single</a>
+                        <a class="dropdown-item" href="{% url "agent_register" %}">Agents Reigstration</a>
                     </div>
                 </li>
                 <li class="nav-item">
