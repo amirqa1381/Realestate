@@ -7,7 +7,94 @@
 
 
 {% block content %}
-
+<div class="click-closed"></div>
+<div class="box-collapse">
+    <div class="title-box-d">
+        <h3 class="title-d">Search Property</h3>
+    </div>
+    <span class="close-box-collapse right-boxed ion-ios-close"></span>
+    <div class="box-collapse-wrap form">
+        <form class="form-a" method="get" action="{% url "search" %}">
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <div class="form-group">
+                        <label for="Type">Search</label>
+                        <input type="text" class="form-control form-control-lg form-control-a" placeholder="Search" name="query">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="Type">Type</label>
+                        <select class="form-control form-control-lg form-control-a" id="Type" name="type">
+                            <option></option>
+                            <option>RE</option>
+                            <option>SE</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <select class="form-control form-control-lg form-control-a" id="city" name="city">
+                            <option></option>
+                            <option>Florida</option>
+                            <option>Arizona</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <select class="form-control form-control-lg form-control-a" id="bedrooms" name="bed">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="garages">Garages</label>
+                        <select class="form-control form-control-lg form-control-a" id="garages" name="garage">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <select class="form-control form-control-lg form-control-a" id="bathrooms" name="bath">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="price">Min Price</label>
+                        <select class="form-control form-control-lg form-control-a" id="price" name="price">
+                            <option></option>
+                            <option>50000</option>
+                            <option>100000</option>
+                            <option>150000</option>
+                            <option>200000</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-b">Search Property</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
     <!--/ Carousel Star /-->
     <div class="intro intro-carousel">
