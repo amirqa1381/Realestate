@@ -19,7 +19,7 @@ class RegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2')
+        fields = ('username', 'email', 'first_name', 'last_name', 'password1', 'password2','ceo')
         widgets = {
             'username': forms.TextInput(attrs={'class': 'form-control'}),
             'email': forms.EmailInput(attrs={'class': 'form-control'}),
@@ -147,7 +147,7 @@ class RealestateRegistrationForm(forms.ModelForm):
     """
     class Meta:
         model = RealEstate
-        fields = ['Name', 'address', 'city', 'country', 'phone', 'description', 'email']
+        fields = ['Name', 'address', 'city', 'country', 'phone', 'description', 'email',]
         widgets = {
             'Name' : forms.TextInput(attrs={'class': 'form-control'}),
             'address' : forms.TextInput(attrs={'class':'form-control'}),
