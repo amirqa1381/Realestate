@@ -13,6 +13,7 @@ class User(AbstractUser):
     country = models.CharField(max_length=150, verbose_name="Country")
     image = models.ImageField(upload_to='user-image', null=True, blank=True, verbose_name="Image")
     phone = models.CharField(max_length=11, null=True, blank=True, verbose_name="Phone")
+    ceo = models.BooleanField(default=False, verbose_name="CEO")
 
     def __str__(self):
         return self.username

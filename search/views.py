@@ -1,6 +1,5 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
-from django.urls import reverse
 from main.models import Home
 from django.db.models import Q
 

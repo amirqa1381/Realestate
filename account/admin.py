@@ -17,7 +17,7 @@ class UserAdmin(admin.ModelAdmin):
             'Advanced Option',
             {
                 "classes": ["collapse"],
-                "fields": ["city", "country", "phone", "image"],
+                "fields": ["city", "country", "phone","ceo", "image"],
             }
         )
     ]

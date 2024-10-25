@@ -6,8 +6,178 @@
 {% endblock %}
 
 
-{% block content %}
+{% block navbar %}
+<nav class="navbar navbar-default navbar-trans navbar-expand-lg fixed-top">
+    <div class="container">
+        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarDefault"
+                aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <a class="navbar-brand text-brand" href="index.html">Estate<span class="color-b">Agency</span></a>
+        <button type="button" class="btn btn-link nav-search navbar-toggle-box-collapse d-md-none"
+                data-toggle="collapse"
+                data-target="#navbarTogglerDemo01" aria-expanded="false">
+            <span class="fa fa-search" aria-hidden="true"></span>
+        </button>
+        <div class="navbar-collapse collapse justify-content-center" id="navbarDefault">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'index' %}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'about' %}">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'properties' %}">Properties</a>
+                </li>
+                {% if not request.user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'blogs' %}">Blog</a>
+                    </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown"
+                       aria-haspopup="true" aria-expanded="false">
+                        Pages
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% if request.user.is_authenticated %}
+                        	<a class="dropdown-item" href="{% url 'user_panel' %}">User Panel</a>
+                        {% endif %} 
+                        {% with user_panel=request.user.profile.first%}
+                        	{% if user_panel and user_panel.completed %}
+                        		<a class="dropdown-item" href="{% url 'property_sell' %}">Selling</a>
+                                {% else %}
+                                <a class="dropdown-item" href="{% url 'work_profile' %}">Complete Info Selling</a>
+                        	{% endif %}
+                        {% endwith %}
+                        <a class="dropdown-item" href="{% url "agent_register" %}">Agents Reigstration</a>
+                        {% if request.user.ceo %}
+                        <a class="dropdown-item" href="{% url "realestate_register" %}">RealEsate Reigstration</a>
+                        {% endif %}
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'contact' %}">Contact</a>
+                </li>
+                {% if request.user.is_authenticated %}
+                    <li class="nav-item">
+                        {#                        <a class="nav-link" href="contact.html">LogOut</a>#}
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <input type="su bmit" class="nav-link logout-me" value="Logout">
+                        </form>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <button type="button" class="btn btn-b-n navbar-toggle-box-collapse d-none d-md-block" data-toggle="collapse"
+                data-target="#navbarTogglerDemo01" aria-expanded="false">
+            <span class="fa fa-search" aria-hidden="true"></span>
+        </button>
+    </div>
+</nav>
+{% endblock %}
 
+{% block content %}
+<div class="click-closed"></div>
+<div class="box-collapse">
+    <div class="title-box-d">
+        <h3 class="title-d">Search Property</h3>
+    </div>
+    <span class="close-box-collapse right-boxed ion-ios-close"></span>
+    <div class="box-collapse-wrap form">
+        <form class="form-a" method="get" action="{% url "search" %}">
+            <div class="row">
+                <div class="col-md-12 mb-2">
+                    <div class="form-group">
+                        <label for="Type">Search</label>
+                        <input type="text" class="form-control form-control-lg form-control-a" placeholder="Search" name="query">
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="Type">Type</label>
+                        <select class="form-control form-control-lg form-control-a" id="Type" name="type">
+                            <option></option>
+                            <option>RE</option>
+                            <option>SE</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="city">City</label>
+                        <select class="form-control form-control-lg form-control-a" id="city" name="city">
+                            <option></option>
+                            <option>Florida</option>
+                            <option>Arizona</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="bedrooms">Bedrooms</label>
+                        <select class="form-control form-control-lg form-control-a" id="bedrooms" name="bed">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="garages">Garages</label>
+                        <select class="form-control form-control-lg form-control-a" id="garages" name="garage">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="bathrooms">Bathrooms</label>
+                        <select class="form-control form-control-lg form-control-a" id="bathrooms" name="bath">
+                            <option></option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-2">
+                    <div class="form-group">
+                        <label for="price">Min Price</label>
+                        <select class="form-control form-control-lg form-control-a" id="price" name="price">
+                            <option></option>
+                            <option>50000</option>
+                            <option>100000</option>
+                            <option>150000</option>
+                            <option>200000</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <button type="submit" class="btn btn-b">Search Property</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
     <!--/ Carousel Star /-->
     <div class="intro intro-carousel">
