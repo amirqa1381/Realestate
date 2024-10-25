@@ -75,7 +75,7 @@
                         {#                        <a class="nav-link" href="contact.html">LogOut</a>#}
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}
-                            <input type="su bmit" class="nav-link logout-me" value="Logout">
+                            <button type="submit" class="nav-link logout-me">Logout</button>
                         </form>
                     </li>
                 {% endif %}
