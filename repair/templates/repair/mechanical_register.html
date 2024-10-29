@@ -10,7 +10,7 @@ Registering Mechanic
     <div class="row justify-content-center">
         <div class="col-md-7">
             <h2 class="text-center">Mechanic Registering</h2>
-            <form class="form-a contactForm" action="{% url 'login' %}" method="post" role="form"
+            <form class="form-a contactForm" action="{% url 'mechanic_register' %}" method="post" role="form"
                   style="margin-top: 8rem">
                 {% csrf_token %}
                 <div id="errormessage" class="alert alert-danger" style="display: none;"></div>
