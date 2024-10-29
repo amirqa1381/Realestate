@@ -77,6 +77,7 @@
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         {% if request.user.is_authenticated %}
                         	<a class="dropdown-item" href="{% url 'user_panel' %}">User  Panel</a>
+                            <a class="dropdown-item" href="{% url "mechanic_register" %}">Mechanic Registeration</a>
                         {% endif %} 
                         {% with user_panel=request.user.profile.first%}
                         	{% if user_panel and user_panel.completed %}
