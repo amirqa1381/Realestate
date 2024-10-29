@@ -24,6 +24,7 @@ urlpatterns = [
     path('', include('main.urls')),
     path('account/', include('account.urls')),
     path("search/", include("search.urls")),
+    path("repair/", include("repair.urls")),
 ]
 
 if settings.DEBUG:
