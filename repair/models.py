@@ -78,4 +78,14 @@ def set_tax(sender, instance,**kwargs):
     instance.tax = instance.repair_price * 0.03
     
     
+
+class HomeImagesProblem(models.Model):
+    """
+    here is the class that is for the images that user will submit for the problem that the home has 
+    """
+    repair = models.ForeignKey(Repair, on_delete=models.CASCADE, verbose_name='Repair Images', related_name='home_images_problem')
+    alt = models.CharField(max_length=250, verbose_name='Alt')
+    images = models.ImageField('RepairImages')
     
+    def __str__(self):
+        return str(self.repair.home.address)
