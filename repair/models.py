@@ -17,10 +17,6 @@ def create_repair_code():
     return random_number
 
 
-def set_tax():
-    pass
-
-
 
 class Mechanic(models.Model):
     """
@@ -79,7 +75,7 @@ def set_tax(sender, instance,**kwargs):
     
     
 
-class HomeImagesProblem(models.Model):
+class RepairImages(models.Model):
     """
     here is the class that is for the images that user will submit for the problem that the home has 
     """
