@@ -30,6 +30,9 @@
                     <a class="nav-link" href="{% url 'about' %}">About</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{% url 'home_choosing_house' %}">Repair</a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{% url 'properties' %}">Properties</a>
                 </li>
                 {% if not request.user.is_authenticated %}
