@@ -1,0 +1,31 @@
+{% extends "master.html" %}
+
+
+
+{% block title %}
+Homes List
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Item List</h1>
+    <div class="row">
+        {% for home in homes %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ home.name }}</h5>
+                        <p class="card-text">{{ home.description }}</p>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12">
+                <p>No Home available.</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
