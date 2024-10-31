@@ -46,7 +46,7 @@ class Repair(models.Model):
     repair_done_time = models.DateField(verbose_name='Repair Done Time', null=True, blank=True)
 
     def clean(self):
-        if self.repair_price < 0:
+        if int(self.repair_price) < 0:
             raise ValidationError("The final price should not be negative")
         repair_tax = self.repair_price * 0.02
 
