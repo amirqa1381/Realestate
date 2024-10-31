@@ -11,16 +11,15 @@ Submit Repair Form
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <form action="{% url 'property_sell' %}" method="post" style="margin-top: 10rem"
+            <form action="{% url 'repair_submit_view' pk=home.pk %}" method="post" style="margin-top: 10rem"
                   enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="mb-3">
                     {{ form.as_p }}
-                    {{ form_sets.management_form }}
-                    {% for form_set in form_sets %}
-                        {{ form_set }}
+                    {{ form_set.management_form }}
+                    {% for form in form_set %}
+                        {{ form.as_p }}
                     {% endfor %}
-
                 </div>
                 <button type="submit" class="btn btn-primary">Submit</button>
             </form>

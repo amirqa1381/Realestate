@@ -52,11 +52,13 @@ class RepairSubmitView(LoginRequiredMixin, View):
         """
         this method is for handling the get method when the get request is coming to this view
         """
+        home = Home.objects.get(pk=pk)
         form = RepairForm()
-        form_sets = RepairImagesFormset(queryset=RepairImages.objects.none(), prefix="repair_images")
+        form_set = RepairImagesFormset(queryset=RepairImages.objects.none(), prefix="repair_images")
         context = {
             'form': form,
-            'form_set': form_sets
+            'form_set': form_set,
+            'home': home
         }
         return render(request, "repair/repair_submit_view.html", context)
     
@@ -67,15 +69,15 @@ class RepairSubmitView(LoginRequiredMixin, View):
         # here i have retrieved the home that user wants to send the request for repairing
         home = Home.objects.get(pk=pk)
         form = RepairForm(request.POST)
-        form_sets = RepairImagesFormset(request.POST, request.FILES, prefix="repair_images")
-        form_sets.management_form = ManagementForm(request.POST, prefix="repair_images")
+        form_set = RepairImagesFormset(request.POST, request.FILES, prefix="repair_images")
+        form_set.management_form = ManagementForm(request.POST, prefix="repair_images")
         # here we check that form and formset are valid or not
-        if form.is_valid() and form_sets.is_valid():
+        if form.is_valid() and form_set.is_valid():
             repair = form.save(commit=False)
             repair.home = home
             repair.save()
             # here i have set the images that we have
-            instances = form_sets.save(commit=False)
+            instances = form_set.save(commit=False)
             for instance in instances:
                 instance.repair = repair
                 instance.save()
@@ -83,7 +85,7 @@ class RepairSubmitView(LoginRequiredMixin, View):
         else:
             context = {
             'form': form,
-            'form_set': form_sets
+            'form_set': form_set
             }
             return render(request, "repair/repair_submit_view.html", context)
             
