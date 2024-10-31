@@ -48,7 +48,7 @@ class RepairSubmitView(LoginRequiredMixin, View):
     """
     this class is for the submitting the repair request
     """
-    def get(self, request: HttpRequest):
+    def get(self, request: HttpRequest, pk):
         """
         this method is for handling the get method when the get request is coming to this view
         """
