@@ -81,7 +81,8 @@ class RepairImages(models.Model):
     """
     repair = models.ForeignKey(Repair, on_delete=models.CASCADE, verbose_name='Repair Images', related_name='home_images_problem')
     alt = models.CharField(max_length=250, verbose_name='Alt')
-    images = models.ImageField('RepairImages')
+    images = models.ImageField(upload_to="RepairImages", verbose_name="Image")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     
     def __str__(self):
         return str(self.repair.home.address)
