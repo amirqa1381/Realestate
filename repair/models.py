@@ -37,9 +37,9 @@ class Repair(models.Model):
     mechanic = models.ForeignKey(Mechanic, on_delete=models.SET_NULL, null=True, verbose_name='Mechanic',
                                  related_name='mechanic_repair')
     issue = models.TextField(verbose_name='Issue')
-    repair_code = models.IntegerField(verbose_name='Repair Code')
+    repair_code = models.IntegerField(verbose_name='Repair Code',default=create_repair_code)
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)], null=True, blank=True)
-    repair_price = models.FloatField(verbose_name='Final Price', default=create_repair_code, null=True, blank=True)
+    repair_price = models.FloatField(verbose_name='Final Price', null=True, blank=True)
     home = models.ForeignKey(Home, on_delete=models.SET_NULL, null=True, verbose_name='Home',
                              related_name='home_repair')
     request_of_repair = models.DateField(verbose_name='Request of Repair', auto_now_add=True)
