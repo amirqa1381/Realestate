@@ -1,0 +1,37 @@
+{% extends "master.html" %}
+
+
+
+{% block title %}
+Homes List
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Home List</h1>
+    <div class="row">
+        {% for home in homes %}
+        <div class="col-md-4 mb-4">  <!-- Use Bootstrap grid classes for responsive layout -->
+            <div class="card">
+                {% if home.image.first %}
+                <img src="{{ home.image.first.image.url }}" class="card-img-top" alt="{{ home.image.first.alt }}">
+                {% endif %}
+                <div class="card-body">
+                    <h5 class="card-title">{{ home.address|truncatechars:10 }}</h5>
+                    <p class="card-text">{{ home.description|truncatechars:90 }}</p>
+                    <a href="{% url 'single-property' slug=home.slug %}" class="btn btn-primary">More...</a>
+                    <a href="{% url '' %}" class="btn btn-primary">Choose</a>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col-12">
+                <p>No Home available.</p>
+                <a href="{% url 'property_sell' %}" class="btn btn-primary">Register The Home</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

@@ -4,6 +4,9 @@ from account.models import User
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 import random
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
 
 
 def create_repair_code():
@@ -12,6 +15,7 @@ def create_repair_code():
     """
     random_number = random.randint(1000,10000)
     return random_number
+
 
 
 class Mechanic(models.Model):
@@ -34,8 +38,8 @@ class Repair(models.Model):
                                  related_name='mechanic_repair')
     issue = models.TextField(verbose_name='Issue')
     repair_code = models.IntegerField(verbose_name='Repair Code')
-    tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)])
-    repair_price = models.FloatField(verbose_name='Final Price', default=create_repair_code)
+    tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)], null=True, blank=True)
+    repair_price = models.FloatField(verbose_name='Final Price', default=create_repair_code, null=True, blank=True)
     home = models.ForeignKey(Home, on_delete=models.SET_NULL, null=True, verbose_name='Home',
                              related_name='home_repair')
     request_of_repair = models.DateField(verbose_name='Request of Repair', auto_now_add=True)
@@ -52,3 +56,32 @@ class Repair(models.Model):
 
     def __str__(self):
         return f"{self.home.owner}/{self.mechanic}/{self.repair_price}"
+
+
+
+@receiver(pre_save, sender=Repair)
+def set_tax(sender, instance,**kwargs):
+    """
+    this function is for setting the tax for each object
+    """
+    if instance.home.meter < 100:
+        instance.repair_price = 25
+    elif 100 <= instance.home.meter < 250:
+        instance.repair_price = 75
+    else:
+        instance.repair_price = 100
+    
+    instance.tax = instance.repair_price * 0.03
+    
+    
+
+class RepairImages(models.Model):
+    """
+    here is the class that is for the images that user will submit for the problem that the home has 
+    """
+    repair = models.ForeignKey(Repair, on_delete=models.CASCADE, verbose_name='Repair Images', related_name='home_images_problem')
+    alt = models.CharField(max_length=250, verbose_name='Alt')
+    images = models.ImageField('RepairImages')
+    
+    def __str__(self):
+        return str(self.repair.home.address)

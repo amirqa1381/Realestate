@@ -1,9 +1,10 @@
 from django.shortcuts import render
-from django.views.generic import FormView
+from django.views.generic import FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .forms import MechanicalRegistrationForm
 from django.urls import reverse_lazy
 from django.contrib import messages
+from main.models import Home
 
 
 class MechanicRegister(LoginRequiredMixin, FormView):
@@ -22,3 +23,18 @@ class MechanicRegister(LoginRequiredMixin, FormView):
         messages.success(self.request, "The id is registered SUCCESSFULLY")
         return super().form_valid(form)
     
+
+
+class RepairChoosingHouse(LoginRequiredMixin, ListView):
+    """
+    this class is for choosing the houses that user registered
+    """
+    model = Home
+    template_name = "repair/repair_homes_list.html"
+    context_object_name = "homes"
+    
+    def get_queryset(self):
+        """
+        this function is for the filtering the homes that user registered in the site
+        """
+        return Home.objects.filter(owner = self.request.user)
