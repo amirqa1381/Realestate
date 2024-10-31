@@ -1,0 +1,29 @@
+{% extends "master.html" %}
+
+
+{% block title %}
+Submit Repair Form
+{% endblock title %}
+
+
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <form action="{% url 'repair_submit_view' pk=home.pk %}" method="post" style="margin-top: 10rem"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="mb-3">
+                    {{ form.as_p }}
+                    {{ form_set.management_form }}
+                    {% for form in form_set %}
+                        {{ form.as_p }}
+                    {% endfor %}
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

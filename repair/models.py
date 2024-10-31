@@ -37,16 +37,16 @@ class Repair(models.Model):
     mechanic = models.ForeignKey(Mechanic, on_delete=models.SET_NULL, null=True, verbose_name='Mechanic',
                                  related_name='mechanic_repair')
     issue = models.TextField(verbose_name='Issue')
-    repair_code = models.IntegerField(verbose_name='Repair Code')
+    repair_code = models.IntegerField(verbose_name='Repair Code',default=create_repair_code)
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)], null=True, blank=True)
-    repair_price = models.FloatField(verbose_name='Final Price', default=create_repair_code, null=True, blank=True)
+    repair_price = models.FloatField(verbose_name='Final Price', null=True, blank=True)
     home = models.ForeignKey(Home, on_delete=models.SET_NULL, null=True, verbose_name='Home',
                              related_name='home_repair')
     request_of_repair = models.DateField(verbose_name='Request of Repair', auto_now_add=True)
     repair_done_time = models.DateField(verbose_name='Repair Done Time', null=True, blank=True)
 
     def clean(self):
-        if self.repair_price < 0:
+        if int(self.repair_price) < 0:
             raise ValidationError("The final price should not be negative")
         repair_tax = self.repair_price * 0.02
 
@@ -81,7 +81,8 @@ class RepairImages(models.Model):
     """
     repair = models.ForeignKey(Repair, on_delete=models.CASCADE, verbose_name='Repair Images', related_name='home_images_problem')
     alt = models.CharField(max_length=250, verbose_name='Alt')
-    images = models.ImageField('RepairImages')
+    images = models.ImageField(upload_to="RepairImages", verbose_name="Image")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     
     def __str__(self):
         return str(self.repair.home.address)

@@ -22,7 +22,7 @@ Homes List
                     <h5 class="card-title">{{ home.address|truncatechars:10 }}</h5>
                     <p class="card-text">{{ home.description|truncatechars:90 }}</p>
                     <a href="{% url 'single-property' slug=home.slug %}" class="btn btn-primary">More...</a>
-                    <a href="{% url '' %}" class="btn btn-primary">Choose</a>
+                    <a href="{% url 'repair_submit_view' pk=home.pk %}" class="btn btn-primary">Choose</a>
                 </div>
             </div>
         </div>

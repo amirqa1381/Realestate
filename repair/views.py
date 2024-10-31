@@ -1,10 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import MechanicalRegistrationForm
+from .forms import MechanicalRegistrationForm, RepairForm, RepairImagesFormset, RepairImages
 from django.urls import reverse_lazy
 from django.contrib import messages
 from main.models import Home
+from django.views import View
+from django.http import HttpRequest
+from django.forms.formsets import ManagementForm
 
 
 class MechanicRegister(LoginRequiredMixin, FormView):
@@ -38,3 +41,72 @@ class RepairChoosingHouse(LoginRequiredMixin, ListView):
         this function is for the filtering the homes that user registered in the site
         """
         return Home.objects.filter(owner = self.request.user)
+    
+    
+
+class RepairSubmitView(LoginRequiredMixin, View):
+    """
+    this class is for the submitting the repair request
+    """
+    def get(self, request: HttpRequest, pk):
+        """
+        this method is for handling the get method when the get request is coming to this view
+        """
+        home = Home.objects.get(pk=pk)
+        form = RepairForm()
+        form_set = RepairImagesFormset(queryset=RepairImages.objects.none(), prefix="repair_images")
+        context = {
+            'form': form,
+            'form_set': form_set,
+            'home': home
+        }
+        return render(request, "repair/repair_submit_view.html", context)
+    
+    def post(self, request:HttpRequest, pk):
+        """
+        this method is for handling the post method when the post request is coming to this view
+        """
+        # here i have retrieved the home that user wants to send the request for repairing
+        home = Home.objects.get(pk=pk)
+        form = RepairForm(request.POST)
+        form_set = RepairImagesFormset(request.POST, request.FILES, prefix="repair_images")
+        form_set.management_form = ManagementForm(request.POST, prefix="repair_images")
+        # here we check that form and formset are valid or not
+        if form.is_valid() and form_set.is_valid():
+            repair = form.save(commit=False)
+            repair.home = home
+            repair.save()
+            # here i have set the images that we have
+            instances = form_set.save(commit=False)
+            for instance in instances:
+                instance.repair = repair
+                instance.save()
+            return redirect("index")
+        else:
+            context = {
+            'form': form,
+            'form_set': form_set
+            }
+            return render(request, "repair/repair_submit_view.html", context)
+            
+            
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
