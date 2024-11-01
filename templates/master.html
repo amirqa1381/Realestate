@@ -78,6 +78,7 @@
                         	<a class="dropdown-item" href="{% url 'user_panel' %}">User  Panel</a>
                             <a class="dropdown-item" href="{% url "mechanic_register" %}">Mechanic Registeration</a>
                             <a class="dropdown-item" href="{% url 'blogs' %}">Blogs</a>
+                            <a class="dropdown-item" href="{% url 'repairs_list' %}">Repairs list</a>
                         {% endif %} 
                         {% with user_panel=request.user.profile.first%}
                         	{% if user_panel and user_panel.completed %}
