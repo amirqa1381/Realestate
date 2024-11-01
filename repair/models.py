@@ -55,6 +55,7 @@ class Repair(models.Model):
             
             
     def save(self, *args, **kwargs):
+        # here we check the meter of the home that user send the repair request for it
         if self.home:
             if self.home.meter < 100:
                 self.repair_price = 25
