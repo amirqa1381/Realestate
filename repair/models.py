@@ -4,8 +4,7 @@ from account.models import User
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 import random
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+
 
 
 
