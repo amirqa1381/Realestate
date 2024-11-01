@@ -8,6 +8,7 @@ from main.models import Home
 from django.views import View
 from django.http import HttpRequest
 from django.forms.formsets import ManagementForm
+from .models import Repair
 
 
 class MechanicRegister(LoginRequiredMixin, FormView):
@@ -93,7 +94,13 @@ class RepairSubmitView(LoginRequiredMixin, View):
     
     
     
-    
+class RepairRequestList(LoginRequiredMixin, ListView):
+    """
+    this class is for the repair request lists, and we show the list of the all the repairs requests
+    """ 
+    model = Repair
+    context_object_name = "repairs"
+    template_name = "repair/repairs_list.html"
     
     
     
