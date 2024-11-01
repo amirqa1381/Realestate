@@ -18,7 +18,9 @@
                     <h5 class="card-title">{{ repair.home.address|truncatechars:10 }}</h5>
                     <h5 class="card-title">{{ repair.repair_priice}}</h5>
                     <p class="card-text">{{ home.issue|truncatechars:90 }}</p>
-                    <a href="{% url '' %}" class="btn btn-primary">Apply</a>
+                    {% if request.user.mechanic.is_active %}
+                        <a href="{% url '' %}" class="btn btn-primary">Apply</a>
+                    {% endif %}
                 </div>
             </div>
         </div>
