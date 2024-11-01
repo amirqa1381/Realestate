@@ -4,8 +4,7 @@ from account.models import User
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 import random
-from django.db.models.signals import pre_save
-from django.dispatch import receiver
+
 
 
 
@@ -46,34 +45,35 @@ class Repair(models.Model):
     repair_done_time = models.DateField(verbose_name='Repair Done Time', null=True, blank=True)
 
     def clean(self):
-        if int(self.repair_price) < 0:
+        if self.repair_price is not None and int(self.repair_price) < 0:
             raise ValidationError("The final price should not be negative")
-        repair_tax = self.repair_price * 0.02
-
-        if self.tax != repair_tax:
-            raise ValidationError(f"Tax must be {repair_tax} based on the final price.")
         
+        if self.repair_price is not None:
+            repair_tax = self.repair_price * 0.03
+            if self.tax != repair_tax:
+                raise ValidationError(f"Tax must be {repair_tax} based on the final price.")
+            
+            
+    def save(self, *args, **kwargs):
+        # here we check the meter of the home that user send the repair request for it
+        if self.home:
+            if self.home.meter < 100:
+                self.repair_price = 25
+            elif 100 <= self.home.meter < 250:
+                self.repair_price = 75
+            else:
+                self.repair_price = 100
+            
+            self.tax = self.repair_price * 0.03
+        return super().save(*args, **kwargs) # Call the parent class of the save method
+            
 
     def __str__(self):
         return f"{self.home.owner}/{self.mechanic}/{self.repair_price}"
 
 
 
-@receiver(pre_save, sender=Repair)
-def set_tax(sender, instance,**kwargs):
-    """
-    this function is for setting the tax for each object
-    """
-    if instance.home.meter < 100:
-        instance.repair_price = 25
-    elif 100 <= instance.home.meter < 250:
-        instance.repair_price = 75
-    else:
-        instance.repair_price = 100
-    
-    instance.tax = instance.repair_price * 0.03
-    
-    
+
 
 class RepairImages(models.Model):
     """
