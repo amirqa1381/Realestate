@@ -103,6 +103,7 @@ class MechanicRequestForRepair(models.Model):
     end_time = models.DateTimeField(verbose_name="End time")
     repair_duration = models.DurationField(null=True, blank=True, verbose_name="Repair duration")
     status = models.CharField(verbose_name="Status", choices=STATUS, default='pending', max_length=20)
+    repair_requirements = models.TextField(verbose_name="Repair Requirements")
     
     
     def save(self, *args, **kwargs):
