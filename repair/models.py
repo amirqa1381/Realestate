@@ -33,8 +33,6 @@ class Repair(models.Model):
     """
     this class is for keeping the house that will repair by other people
     """
-    mechanic = models.ForeignKey(Mechanic, on_delete=models.SET_NULL, null=True, verbose_name='Mechanic',
-                                 related_name='mechanic_repair')
     issue = models.TextField(verbose_name='Issue')
     repair_code = models.IntegerField(verbose_name='Repair Code',default=create_repair_code)
     tax = models.FloatField(verbose_name='Tax', validators=[MinValueValidator(0)], null=True, blank=True)
@@ -86,3 +84,35 @@ class RepairImages(models.Model):
     
     def __str__(self):
         return str(self.repair.home.address)
+    
+    
+
+class MechanicRequestForRepair(models.Model):
+    """
+    this class is for the request of the mechanic and we handle the requests with this model
+    """
+    STATUS = [
+        ('pending', 'Pending'),
+        ('accepted', 'Accepted'),
+        ('rejected', 'Rejected')
+    ]
+    mechanic = models.ForeignKey(Mechanic, on_delete=models.CASCADE,related_name="mechanic_request", verbose_name="mechanic")
+    repair = models.ForeignKey(Repair, on_delete=models.CASCADE,related_name="repair_mechanic_request", verbose_name="repair")
+    request_send_time = models.DateTimeField(auto_now_add=True, verbose_name="Request Send Time")
+    start_time = models.DateTimeField(verbose_name="Start time")
+    end_time = models.DateTimeField(verbose_name="End time")
+    repair_duration = models.DurationField(null=True, blank=True, verbose_name="Repair duration")
+    status = models.CharField(verbose_name="Status", choices=STATUS, default='pending', max_length=20)
+    
+    
+    def save(self, *args, **kwargs):
+        # here we check that the start time and the end time are represented for our project
+        if self.start_time and self.end_time:
+            self.repair_duration = self.end_time - self.start_time
+        else:
+            self.repair_duration = None
+        return super().save(*args, **kwargs)
+
+    def __str__(self):
+        return f"Request by {self.mechanic} - Status: {self.status}" 
+    
