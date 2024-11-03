@@ -42,3 +42,13 @@ class RepairImagesForm(forms.ModelForm):
         
 
 RepairImagesFormset = modelformset_factory(RepairImages, form=RepairImagesForm, extra=2, can_delete=True)
+
+
+
+# class MechanicRequestForm(forms.ModelForm):
+#     """
+#     this class is for the handling the sending the request for the repairing the home
+#     """
+#     class Meta:
+#         model = MechanicRequestForRepair
+#         fields = ['']

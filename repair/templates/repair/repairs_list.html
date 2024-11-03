@@ -11,15 +11,15 @@
         {% for repair in repairs %}
         <div class="col-md-4 mb-4">  <!-- Use Bootstrap grid classes for responsive layout -->
             <div class="card">
-                {% if home.image.first %}
+                {% if repair.home_images_problem.first %}
                 <img src="{{ repair.home_images_problem.first.images.url }}" class="card-img-top" alt="{{ repair.home_images_problem.first.alt }}">
                 {% endif %}
                 <div class="card-body">
                     <h5 class="card-title">{{ repair.home.address|truncatechars:10 }}</h5>
-                    <h5 class="card-title">{{ repair.repair_priice}}</h5>
-                    <p class="card-text">{{ home.issue|truncatechars:90 }}</p>
+                    <h5 class="card-title">{{ repair.repair_price}}$</h5>
+                    <p class="card-text">{{ repair.issue|truncatechars:90 }}</p>
                     {% if request.user.mechanic.is_active %}
-                        <a href="{% url '' %}" class="btn btn-primary">Apply</a>
+                        {% comment %} <a href="{% url '' %}" class="btn btn-primary">Apply</a> {% endcomment %}
                     {% endif %}
                 </div>
             </div>
