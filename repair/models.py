@@ -21,7 +21,7 @@ class Mechanic(models.Model):
     """
     this class is for the mechanic model and it has store all the info of the model
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='mechanic', verbose_name='User')
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='mechanic', verbose_name='User')
     mechanical_engineering_code = models.CharField(verbose_name="Mechanical_code", max_length=12)
     created_date = models.DateTimeField(auto_now_add=True, verbose_name="Created_at")
     is_active = models.BooleanField(verbose_name="is active", default=False)
