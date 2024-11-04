@@ -125,6 +125,13 @@ class MechanicRequestView(LoginRequiredMixin, FormView):
         pk = self.kwargs.get('pk')
         return get_object_or_404(Repair, pk=pk)
     
+    def get_context_data(self, **kwargs):
+        """
+        this method is for handling the context in the template
+        """
+        context = super().get_context_data(**kwargs)
+        context['repair'] = self.get_object()
+        return context
     
     
     def form_valid(self, form):
