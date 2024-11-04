@@ -19,7 +19,7 @@
                     <h5 class="card-title">{{ repair.repair_price}}$</h5>
                     <p class="card-text">{{ repair.issue|truncatechars:90 }}</p>
                     {% if request.user.mechanic.is_active %}
-                        <a href="{% url 'mechanic_request' %}" class="btn btn-primary">Apply</a>
+                        <a href="{% url 'mechanic_request' pk=repair.pk %}" class="btn btn-primary">Apply</a>
                     {% endif %}
                 </div>
             </div>
