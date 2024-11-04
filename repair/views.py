@@ -116,7 +116,7 @@ class MechanicRequestView(LoginRequiredMixin, FormView):
     """
     form_class = MechanicRequestForm
     success_url = reverse_lazy("index")
-    template_name = ''
+    template_name = 'repair/mechanic_request.html'
     
     def get_object(self):
         """
