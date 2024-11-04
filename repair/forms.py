@@ -1,5 +1,5 @@
 from django import forms
-from .models import Mechanic, Repair, RepairImages
+from .models import Mechanic, Repair, RepairImages, MechanicRequestForRepair
 from django.forms import modelformset_factory
 
 class MechanicalRegistrationForm(forms.ModelForm):
@@ -45,10 +45,15 @@ RepairImagesFormset = modelformset_factory(RepairImages, form=RepairImagesForm, 
 
 
 
-# class MechanicRequestForm(forms.ModelForm):
-#     """
-#     this class is for the handling the sending the request for the repairing the home
-#     """
-#     class Meta:
-#         model = MechanicRequestForRepair
-#         fields = ['']
+class MechanicRequestForm(forms.ModelForm):
+    """
+    this class is for the handling the sending the request for the repairing the home
+    """
+    class Meta:
+        model = MechanicRequestForRepair
+        fields = ['start_time', 'end_time', 'repair_requirements']
+        widgets = {
+            'start_time': forms.DateInput(attrs={'class': 'form-control'}),
+            'end_time': forms.DateInput(attrs={'class': 'form-control'}),
+            'repair_requirements': forms.Textarea(attrs={'class': 'form-control'}),
+        }
