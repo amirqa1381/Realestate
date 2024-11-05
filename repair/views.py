@@ -1,7 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .forms import MechanicalRegistrationForm, RepairForm, RepairImagesFormset, RepairImages
+from .forms import (MechanicalRegistrationForm,
+                    RepairForm,
+                    RepairImagesFormset,
+                    RepairImages,
+                    MechanicRequestForm,
+                    )
+
 from django.urls import reverse_lazy
 from django.contrib import messages
 from main.models import Home
@@ -104,15 +110,40 @@ class RepairRequestList(LoginRequiredMixin, ListView):
     
     
     
+class MechanicRequestView(LoginRequiredMixin, FormView):
+    """
+    this is the class that is for submitting the mechanic request and handle that 
+    """
+    form_class = MechanicRequestForm
+    success_url = reverse_lazy("index")
+    template_name = 'repair/mechanic_request.html'
+    
+    def get_object(self):
+        """
+        this method is for retrieving the object from the url
+        """
+        pk = self.kwargs.get('pk')
+        return get_object_or_404(Repair, pk=pk)
+    
+    def get_context_data(self, **kwargs):
+        """
+        this method is for handling the context in the template
+        """
+        context = super().get_context_data(**kwargs)
+        context['repair'] = self.get_object()
+        return context
     
     
-    
-    
-    
-    
-    
-    
-    
+    def form_valid(self, form):
+        """
+        this method is for handling the process of validation of the form 
+        """
+        form = form.save(commit=False)
+        form.mechanic = self.request.user.mechanic
+        form.repair = self.get_object()
+        form.save()        
+        return super().form_valid(form)
+
     
     
     
