@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'account',
     'repair',
     'search',
+    'loan_service',
 ]
 
 MIDDLEWARE = [
