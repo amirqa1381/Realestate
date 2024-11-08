@@ -25,6 +25,7 @@ urlpatterns = [
     path('account/', include('account.urls')),
     path("search/", include("search.urls")),
     path("repair/", include("repair.urls")),
+    path("loan-service/", include("loan_service.urls")),
 ]
 
 if settings.DEBUG:
