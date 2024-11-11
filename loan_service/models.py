@@ -21,7 +21,7 @@ class Borrower(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="borrower", verbose_name="User")
     borrower_pid = models.UUIDField(verbose_name="Borrower_PID", unique=True, default=uuid4)
-    bank_account_number = models.CharField(max_length=12, verbose_name="Bank Account Number")
+    bank_account_number = models.IntegerField(verbose_name="Bank Account Number")
     bank = models.CharField(max_length=50, verbose_name="Bank", choices=BANK, default='bank_of_america')
     is_active = models.BooleanField(verbose_name="Is Active", default=False)
     created_at = models.DateTimeField(verbose_name="Created at", auto_now_add=True)
