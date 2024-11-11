@@ -60,6 +60,11 @@ class LoanService(models.Model):
     """
     this class is for the loan service part and it handle the operation of the loan service
     """
+    STATUS = [
+        ('pending', 'Pending'),
+        ('rejected', 'Rejected'),
+        ('successful', 'Successful'),
+    ]
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE, related_name='loan_service', verbose_name='Borrower')
     price = models.FloatField(verbose_name="Price", choices=LoanPrice.choices, default=LoanPrice.PRICE_25000)
     refund_month = models.PositiveIntegerField(verbose_name="Refund Month", choices=RefundMonth.choices, default=RefundMonth.MONTH_4)
@@ -67,6 +72,7 @@ class LoanService(models.Model):
     end_time = models.DateField(verbose_name="End time")
     percentage = models.FloatField(verbose_name='Percentage', null=True, blank=True)
     total_refund = models.FloatField(verbose_name='Total Refund', null=True, blank=True)
+    status = models.CharField(max_length=20 , verbose_name="Status", choices=STATUS, default="pending")
     
     def clean(self):
         super.clean()
