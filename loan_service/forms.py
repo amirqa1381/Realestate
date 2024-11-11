@@ -1,5 +1,6 @@
 from django import forms
 from .models import Borrower
+from django.core.exceptions import ValidationError
 
 
 class BorrowerForm(forms.ModelForm):
@@ -14,3 +15,11 @@ class BorrowerForm(forms.ModelForm):
             'bank': forms.Select(attrs={'class':'form-control'}),
             'has_got_loan_service': forms.CheckboxInput(attrs={'class': 'form-check-input'})
         }
+        
+    
+    def clean_bank_account_number(self):
+        number = self.cleaned_data.get('bank_account_number')
+        if len(str(number)) > 12:
+            raise ValidationError("The bank account number cannot exceed 12 digits.")
+        return number
+            
