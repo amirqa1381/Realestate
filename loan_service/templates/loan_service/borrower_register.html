@@ -1,0 +1,66 @@
+{% extends "master.html" %}  
+
+{% block title %}  
+Borrower Register  
+{% endblock title %}  
+
+{% block content %}  
+{% if messages %}  
+  <ul>  
+    {% for message in messages %}  
+      <li {% if message.tags %}class="{{ message.tags }}"{% endif %}> {{ message }} </li>  
+    {% endfor %}  
+  </ul>  
+{% endif %}  
+<div class="container">  
+    <div class="row justify-content-center">  
+        <div class="col-md-7">  
+            <h2 class="text-center">Register</h2>  
+            <form class="form-a contactForm" action="{% url 'borrower_register' %}" method="post" role="form" style="margin-top: 8rem">  
+                {% csrf_token %}  
+                <div id="errormessage" class="alert alert-danger" style="display: none;"></div>  
+
+                <div class="form-group">  
+                    {{ form.bank_account_number.label }}  
+                    {{ form.bank_account_number }}  
+                    {% if form.bank_account_number.errors %}  
+                        <div class="alert alert-danger">  
+                            {% for error in form.bank_account_number.errors %}  
+                                <span>{{ error }}</span><br>  
+                            {% endfor %}  
+                        </div>  
+                    {% endif %}  
+                </div>  
+
+                <div class="form-group">  
+                    {{ form.bank.label }}  
+                    {{ form.bank }}  
+                    {% if form.bank.errors %}  
+                        <div class="alert alert-danger">  
+                            {% for error in form.bank.errors %}  
+                                <span>{{ error }}</span><br>  
+                            {% endfor %}  
+                        </div>  
+                    {% endif %}  
+                </div>  
+
+                <div class="form-group">  
+                    {{ form.has_got_loan_service.label }}  
+                    {{ form.has_got_loan_service }}  
+                    {% if form.has_got_loan_service.errors %}  
+                        <div class="alert alert-danger">  
+                            {% for error in form.has_got_loan_service.errors %}  
+                                <span>{{ error }}</span><br>  
+                            {% endfor %}  
+                        </div>  
+                    {% endif %}  
+                </div>  
+
+                <div class="text-center">  
+                    <button type="submit" class="btn btn-primary">Register</button>  
+                </div>  
+            </form>  
+        </div>  
+    </div>  
+</div>  
+{% endblock content %}  

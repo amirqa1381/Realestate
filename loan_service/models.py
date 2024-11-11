@@ -21,7 +21,7 @@ class Borrower(models.Model):
     ]
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="borrower", verbose_name="User")
     borrower_pid = models.UUIDField(verbose_name="Borrower_PID", unique=True, default=uuid4)
-    bank_account_number = models.CharField(max_length=12, verbose_name="Bank Account Number")
+    bank_account_number = models.IntegerField(verbose_name="Bank Account Number")
     bank = models.CharField(max_length=50, verbose_name="Bank", choices=BANK, default='bank_of_america')
     is_active = models.BooleanField(verbose_name="Is Active", default=False)
     created_at = models.DateTimeField(verbose_name="Created at", auto_now_add=True)
@@ -60,6 +60,11 @@ class LoanService(models.Model):
     """
     this class is for the loan service part and it handle the operation of the loan service
     """
+    STATUS = [
+        ('pending', 'Pending'),
+        ('rejected', 'Rejected'),
+        ('successful', 'Successful'),
+    ]
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE, related_name='loan_service', verbose_name='Borrower')
     price = models.FloatField(verbose_name="Price", choices=LoanPrice.choices, default=LoanPrice.PRICE_25000)
     refund_month = models.PositiveIntegerField(verbose_name="Refund Month", choices=RefundMonth.choices, default=RefundMonth.MONTH_4)
@@ -67,6 +72,7 @@ class LoanService(models.Model):
     end_time = models.DateField(verbose_name="End time")
     percentage = models.FloatField(verbose_name='Percentage', null=True, blank=True)
     total_refund = models.FloatField(verbose_name='Total Refund', null=True, blank=True)
+    status = models.CharField(max_length=20 , verbose_name="Status", choices=STATUS, default="pending")
     
     def clean(self):
         super.clean()
