@@ -13,7 +13,7 @@ class BorrowerRegisterView(LoginRequiredMixin, FormView):
     """
     form_class = BorrowerForm
     template_name = 'loan_service/borrower_register.html'
-    success_url = reverse_lazy('')
+    success_url = reverse_lazy('index')
     
     def form_valid(self, form):
         """

@@ -11,9 +11,9 @@ class BorrowerForm(forms.ModelForm):
         model = Borrower
         fields = ['bank_account_number', 'bank', 'has_got_loan_service']
         widgets = {
-            'bank_account_number': forms.NumberInput(attrs={'class':'form-controls'}),
+            'bank_account_number': forms.NumberInput(attrs={'class':'form-controls', 'placeholder':'Only 12 digit'}),
             'bank': forms.Select(attrs={'class':'form-control'}),
-            'has_got_loan_service': forms.CheckboxInput(attrs={'class': 'form-check-input'})
+            'has_got_loan_service': forms.CheckboxInput(attrs={'class': 'form-check-input', 'style':'margin-left:15px'})
         }
         
     
