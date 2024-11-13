@@ -42,7 +42,7 @@ class BorrowerRegisterView(LoginRequiredMixin, FormView):
         messages.success(self.request, "The info was saved successfully")
         # here is for sending the mail to user , and we send activate code to user for inserting it 
         # and if it does not provide the activate code that we provide it , it can not go to the next step
-        send_mail("Activate Code", activate_code, settings.EMAIL_HOST_USER, [self.request.user.email,], fail_silently=False)
+        send_mail("Activate Code", f"{activate_code}", settings.EMAIL_HOST_USER, [self.request.user.email,], fail_silently=False)
         return super().form_valid(form)
     
     def form_invalid(self, form):
