@@ -22,4 +22,11 @@ class BorrowerForm(forms.ModelForm):
         if len(str(number)) > 12:
             raise ValidationError("The bank account number cannot exceed 12 digits.")
         return number
-            
+
+
+class ActivateCodeCheckingForm(forms.Form):
+    """
+    this class was for the checking that user insert correct activate code or not
+    """
+    activate_code = forms.IntegerField(label="Activate Code", min_value=1000000, max_value=20000000, widget=forms.NumberInput(attrs={'class':'form-control'}))
+    
