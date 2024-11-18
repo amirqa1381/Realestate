@@ -63,19 +63,22 @@ class CheckingActivateCode(LoginRequiredMixin, FormView):
     and if it does not provide correct code it show to us that it is not correct user and we should take attention to it
     """
     form_class = ActivateCodeCheckingForm
-    template_name = ''
+    template_name = 'loan_service/activate_code_checking.html'
     success_url = reverse_lazy('index')
     
     def form_valid(self, form):
         """
         this method is for checking the validation of the form 
         """
+        # here we check that current user has been registered as borrower
         if hasattr(self.request.user, 'borrower') and self.request.user.borrower:
             a_code = self.request.user.borrower.activate_code
         else:
             messages.error(self.request, "You should first register as borrower")
         
+        # here we retrieve the input activate code
         activate_code = form.cleaned_data['activate_code']
+        # check the activate code
         if activate_code == a_code:
             messages.success(self.request, "The activation code was successfully gotten")
             return super().form_valid(form)
