@@ -74,6 +74,12 @@ class LoanService(models.Model):
     total_refund = models.FloatField(verbose_name='Total Refund', null=True, blank=True)
     status = models.CharField(max_length=20 , verbose_name="Status", choices=STATUS, default="pending")
     
+    def set_end_time(self):
+        """
+        here i want to set the end_time base on the refund month
+        """
+        pass
+    
     def clean(self):
         super.clean()
         if self.start_time >= self.end_time:

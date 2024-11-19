@@ -1,5 +1,5 @@
 from django import forms
-from .models import Borrower
+from .models import Borrower, LoanService
 from django.core.exceptions import ValidationError
 
 
@@ -29,4 +29,13 @@ class ActivateCodeCheckingForm(forms.Form):
     this class was for the checking that user insert correct activate code or not
     """
     activate_code = forms.IntegerField(label="Activate Code", min_value=1000000, max_value=20000000, widget=forms.NumberInput(attrs={'class':'form-control'}))
-    
+
+
+class LoanServiceForm(forms.ModelForm):
+    """
+    this class is for handling the form and page of sending request of lending and if the borrower has conditions of loans 
+    can get the loan and it will active for it
+    """
+    class Meta:
+        model = LoanService
+        fields = ['price', 'refund_month']
