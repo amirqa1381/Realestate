@@ -66,6 +66,7 @@ class LoanService(models.Model):
         ('successful', 'Successful'),
     ]
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE, related_name='loan_service', verbose_name='Borrower')
+    unique_code = models.UUIDField(verbose_name='Unique Code', default=uuid4, unique=True)
     price = models.FloatField(verbose_name="Price", choices=LoanPrice.choices, default=LoanPrice.PRICE_25000)
     refund_month = models.PositiveIntegerField(verbose_name="Refund Month", choices=RefundMonth.choices, default=RefundMonth.MONTH_4)
     start_time = models.DateField(verbose_name="Start time", auto_now_add=True)
