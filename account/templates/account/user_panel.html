@@ -15,7 +15,11 @@
             {% if request.user.home.first %}
             	 <li class="list-group-item text-center"><a href="{% url 'user_register_property' %}">Your Property</a></li>
             {% endif %}
-            <li class="list-group-item text-center"><a href="{% url "borrower_register" %}">Loan Service</a></li>
+            {% if not request.user.borrower %}
+                <li class="list-group-item text-center"><a href="{% url "borrower_register" %}">Loan Service</a></li>
+            {% else %}
+                <li class="list-group-item text-center"><a href="{% url "borrower_register" %}">See Loan service Status</a></li>
+            {% endif %}
             <li class="list-group-item text-center"><a href="">Cras justo odio</a></li>
         </ul>
     </div>
