@@ -2,6 +2,7 @@ from django.db import models
 from account.models import User
 from uuid import uuid4
 from django.core.exceptions import ValidationError
+import datetime
 
 
 
@@ -79,11 +80,14 @@ class LoanService(models.Model):
         """
         here i want to set the end_time base on the refund month
         """
-        pass
+        if self.refund_month and self.start_time:
+            montes_to_add = self.refund_month
+            # here we use timedelta for adding the exact day to the start time
+            self.end_time = self.start_time + datetime.timedelta(days=montes_to_add * 30)
     
     def clean(self):
-        super.clean()
-        if self.start_time >= self.end_time:
+        super().clean()
+        if self.end_time is not None and self.start_time >= self.end_time:
             raise ValidationError("Start time should not be greater than or equal the End time")
     
     def calculate_percentage_and_total_fund(self):
@@ -99,6 +103,8 @@ class LoanService(models.Model):
             self.percentage = (interest / self.total_refund) * 100
     
     def save(self, *args, **kwargs):
+        # execute the all the methods that i have define in the above...
+        self.set_end_time()
         self.calculate_percentage_and_total_fund()
         return super().save(*args, **kwargs)
     
