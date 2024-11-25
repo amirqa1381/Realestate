@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 import random
-from .models import Borrower
+from django.core.exceptions import ValidationError
 
 
 
@@ -98,15 +98,22 @@ class LoanServiceView(LoginRequiredMixin, FormView):
     success_url = reverse_lazy('index')
     
     def form_valid(self, form):
-        form = form.save(commit=False)
+        loan_service = form.save(commit=False)
         # here i have check the that user has submitted a form for registering the borrower 
-        if self.request.user.borrower:
-            form.borrower = self.request.user.borrower
+        if hasattr(self.request.user, 'borrower'):
+            loan_service.borrower = self.request.user.borrower
         else:
             messages.error(self.request, "This user has not registered as a Borrower , You should first fill that part and after that you can return to this page")
             return redirect('borrower_register')
-        form.save(())
-        return super().form_valid(form)
+        try:
+            # here i have set the loan service and handle that 
+            loan_service.save()
+            messages.success(self.request, 'Loan request submitted successfully....')
+            return super().form_valid(form)
+        except ValidationError as e:
+            for error in e.messages:
+                messages.error(self.request, error)
+            
     
     def form_invalid(self, form):
         response = super().form_invalid(form)
