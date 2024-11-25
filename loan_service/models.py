@@ -1,8 +1,9 @@
 from django.db import models
 from account.models import User
 from uuid import uuid4
-from django.core.exceptions import ValidationError
 import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 
@@ -85,11 +86,6 @@ class LoanService(models.Model):
             # here we use timedelta for adding the exact day to the start time
             self.end_time = self.start_time + datetime.timedelta(days=montes_to_add * 30)
     
-    def clean(self):
-        super().clean()
-        if self.end_time is not None and self.start_time >= self.end_time:
-            raise ValidationError("Start time should not be greater than or equal the End time")
-    
     def calculate_percentage_and_total_fund(self):
         """
         this method is for calculating the percentage and total refund field in the model , these fields are not fill with user 
@@ -99,12 +95,11 @@ class LoanService(models.Model):
             annual_interest = 0.08
             time_in_year = self.refund_month / 12
             interest = self.price * annual_interest * time_in_year
-            self.total_refund = self.price + interest
-            self.percentage = (interest / self.total_refund) * 100
+            self.total_refund = round(self.price + interest, 2)
+            self.percentage = round((interest / self.total_refund) * 100)
     
     def save(self, *args, **kwargs):
         # execute the all the methods that i have define in the above...
-        self.set_end_time()
         self.calculate_percentage_and_total_fund()
         return super().save(*args, **kwargs)
     
@@ -113,3 +108,15 @@ class LoanService(models.Model):
         return f"{self.borrower.user.username} -> {self.price} with {self.percentage}"
     
     
+    
+    
+
+@receiver(post_save, sender=LoanService)
+def set_end_time_after_save(sender, instance, created, **kwargs):
+    """
+    this function is for saving the field of the instance of the model 
+    """
+    if created:
+        # here i have called set_end_time() method for saving it
+        instance.set_end_time()
+        instance.save(update_fields=['end_time'])
