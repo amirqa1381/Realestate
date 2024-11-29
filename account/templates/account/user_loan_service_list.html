@@ -1,0 +1,78 @@
+{% extends "master.html" %}
+
+{% block title %}
+Loan Service List
+{% endblock title %}
+
+{% block content %}
+<style>
+    body {
+        background-color: #f8f9fa; /* Light background for contrast */
+    }
+
+    .card {
+        border: 1px solid #dee2e6; /* Card border */
+        border-radius: 0.5rem; /* Rounded corners */
+        transition: transform 0.2s; /* Animation for hover effect */
+    }
+
+    .card:hover {
+        transform: scale(1.05); /* Scale effect on hover */
+    }
+
+    .card-title {
+        font-weight: bold; /* Bold title */
+        color: #343a40; /* Darker color for better readability */
+    }
+
+    .card-subtitle {
+        color: #6c757d; /* Secondary color for subtitle */
+    }
+
+    .card-link {
+        color: #007bff; /* Bootstrap primary color for link */
+        text-decoration: none; /* Remove underline */
+    }
+
+    .card-link:hover {
+        text-decoration: underline; /* Underline on hover */
+    }
+
+    /* Responsive design adjustments */
+    @media (max-width: 768px) {
+        .col-md-4 {
+            flex: 0 0 100%; /* Stack cards on small screens */
+            max-width: 100%;
+        }
+    }
+
+    /* Add top margin to the content */
+    .content-container {
+        margin-top: 15rem; /* Adjust the value as needed */
+    }
+</style>
+
+<div class="content-container">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-10">
+                <div class="row">
+                    {% for loan_service in loan_services %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Price: {{loan_service.price}}</h5>
+                                    <h6 class="card-subtitle mb-2 text-body-secondary">Total refund: {{loan_service.total_refund}}</h6>
+                                    <p>Start time: {{loan_service.start_time}}</p>
+                                    <p>End time: {{loan_service.end_time}}</p>
+                                    <a href="#" class="card-link">Pay</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
