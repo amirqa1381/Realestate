@@ -1,12 +1,14 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic import FormView
-from .forms import BorrowerForm, ActivateCodeCheckingForm
+from .forms import BorrowerForm, ActivateCodeCheckingForm, LoanServiceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.core.mail import send_mail
 from django.conf import settings
 import random
+from django.core.exceptions import ValidationError
+
 
 
 
@@ -85,3 +87,39 @@ class CheckingActivateCode(LoginRequiredMixin, FormView):
         else:
             messages.error(self.request, "The activation code was incorrect")
             return super().form_invalid(form)
+        
+        
+class LoanServiceView(LoginRequiredMixin, FormView):
+    """
+    this class is for the handling the lending to the user and throw this class , user will send loan request to the user
+    """
+    form_class = LoanServiceForm
+    template_name = 'loan_service/Loan_service.html'
+    success_url = reverse_lazy('index')
+    
+    def form_valid(self, form):
+        loan_service = form.save(commit=False)
+        # here i have check the that user has submitted a form for registering the borrower 
+        if hasattr(self.request.user, 'borrower'):
+            loan_service.borrower = self.request.user.borrower
+        else:
+            messages.error(self.request, "This user has not registered as a Borrower , You should first fill that part and after that you can return to this page")
+            return redirect('borrower_register')
+        try:
+            # here i have set the loan service and handle that 
+            loan_service.save()
+            messages.success(self.request, 'Loan request submitted successfully....')
+            return super().form_valid(form)
+        except ValidationError as e:
+            for error in e.messages:
+                messages.error(self.request, error)
+            
+    
+    def form_invalid(self, form):
+        response = super().form_invalid(form)
+        messages.error(self.request, "Form submission failed. Please correct the following errors:")
+        for field , errors in form.errors.items():
+            for error in errors:
+                messages.error(self.request, f"{field}: {error}")
+        return response
+    

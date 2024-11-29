@@ -1,7 +1,9 @@
 from django.db import models
 from account.models import User
 from uuid import uuid4
-from django.core.exceptions import ValidationError
+import datetime
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 
@@ -66,6 +68,7 @@ class LoanService(models.Model):
         ('successful', 'Successful'),
     ]
     borrower = models.ForeignKey(Borrower, on_delete=models.CASCADE, related_name='loan_service', verbose_name='Borrower')
+    unique_code = models.UUIDField(verbose_name='Unique Code', default=uuid4, unique=True)
     price = models.FloatField(verbose_name="Price", choices=LoanPrice.choices, default=LoanPrice.PRICE_25000)
     refund_month = models.PositiveIntegerField(verbose_name="Refund Month", choices=RefundMonth.choices, default=RefundMonth.MONTH_4)
     start_time = models.DateField(verbose_name="Start time", auto_now_add=True)
@@ -78,12 +81,10 @@ class LoanService(models.Model):
         """
         here i want to set the end_time base on the refund month
         """
-        pass
-    
-    def clean(self):
-        super.clean()
-        if self.start_time >= self.end_time:
-            raise ValidationError("Start time should not be greater than or equal the End time")
+        if self.refund_month and self.start_time:
+            montes_to_add = self.refund_month
+            # here we use timedelta for adding the exact day to the start time
+            self.end_time = self.start_time + datetime.timedelta(days=montes_to_add * 30)
     
     def calculate_percentage_and_total_fund(self):
         """
@@ -94,10 +95,11 @@ class LoanService(models.Model):
             annual_interest = 0.08
             time_in_year = self.refund_month / 12
             interest = self.price * annual_interest * time_in_year
-            self.total_refund = self.price + interest
-            self.percentage = (interest / self.total_refund) * 100
+            self.total_refund = round(self.price + interest, 2)
+            self.percentage = round((interest / self.total_refund) * 100)
     
     def save(self, *args, **kwargs):
+        # execute the all the methods that i have define in the above...
         self.calculate_percentage_and_total_fund()
         return super().save(*args, **kwargs)
     
@@ -106,3 +108,15 @@ class LoanService(models.Model):
         return f"{self.borrower.user.username} -> {self.price} with {self.percentage}"
     
     
+    
+    
+
+@receiver(post_save, sender=LoanService)
+def set_end_time_after_save(sender, instance, created, **kwargs):
+    """
+    this function is for saving the field of the instance of the model 
+    """
+    if created:
+        # here i have called set_end_time() method for saving it
+        instance.set_end_time()
+        instance.save(update_fields=['end_time'])

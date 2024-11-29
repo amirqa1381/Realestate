@@ -1,0 +1,48 @@
+{% extends "master.html" %}
+
+
+{% block title %}
+Loan Service Request
+{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <h2 class="text-center">Loan Service</h2>
+            <form class="form-a contactForm" action="{% url 'loan_service' %}" method="post" role="form"
+                  style="margin-top: 8rem">
+                {% csrf_token %}
+                {{form.non_field_errors}}
+                <div id="errormessage" class="alert alert-danger" style="display: none;"></div>
+                <div class="form-group">  
+                    {{ form.price.label }}  
+                    {{ form.price }}  
+                    {% if form.price.errors %}  
+                        <div class="alert alert-danger">  
+                            {% for error in form.bank.errors %}  
+                                <span>{{ error }}</span><br>  
+                            {% endfor %}  
+                        </div>  
+                    {% endif %}  
+                </div>  
+                <div class="form-group">  
+                    {{ form.refund_month.label }}  
+                    {{ form.refund_month }}  
+                    {% if form.refund_month.errors %}  
+                        <div class="alert alert-danger">  
+                            {% for error in form.bank.errors %}  
+                                <span>{{ error }}</span><br>  
+                            {% endfor %}  
+                        </div>  
+                    {% endif %}  
+                </div>  
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock content %}

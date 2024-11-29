@@ -39,3 +39,7 @@ class LoanServiceForm(forms.ModelForm):
     class Meta:
         model = LoanService
         fields = ['price', 'refund_month']
+        widgets = {
+            'price': forms.Select(attrs={'class': 'form-control'}),
+            'refund_month': forms.Select(attrs={'class': 'form-control'})
+        }

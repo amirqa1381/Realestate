@@ -18,6 +18,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import PasswordChangeView
 from main.models import Home
 from main.forms import HomeForm
+from loan_service.models import LoanService
 
 logger = logging.getLogger(__name__)
 
@@ -219,4 +220,17 @@ class RealEstateRegistration(LoginRequiredMixin, FormView):
         form.is_active = True
         form.save()
         return super().form_valid(form)
+    
+
+class UserLoanServiceListView(LoginRequiredMixin,ListView):
+    """
+    this view is for a time that user has loan service and we want to show them all the services that they have 
+    """
+    template_name = "account/user_loan_service_list.html"
+    model = LoanService
+    context_object_name = "loan_services"
+    
+    def get_queryset(self):
+        return LoanService.objects.filter(borrower=self.request.user.borrower).order_by("-start_time")
+    
         

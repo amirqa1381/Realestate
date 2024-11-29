@@ -10,6 +10,7 @@ from .views import (UserRegistrationView,
                     UserRegisterProperty,
                     EditInfoOfUserProperty,
                     RealEstateRegistration,
+                    UserLoanServiceListView,
                     )
 from django.contrib.auth.views import LogoutView
 
@@ -26,5 +27,6 @@ urlpatterns = [
     path('agent-register/', AgentRegistrationView.as_view(), name='agent_register'),
     path('user-register-property/', UserRegisterProperty.as_view(), name='user_register_property'),
     path('edit-user-property/<slug:slug>/', EditInfoOfUserProperty.as_view(), name='edit_user_property'),
-    path('realestate-registration/', RealEstateRegistration.as_view(), name="realestate_register")
+    path('realestate-registration/', RealEstateRegistration.as_view(), name="realestate_register"),
+    path('user-all-loan-services/', UserLoanServiceListView.as_view(), name='user_all_loan_services'),
 ]
