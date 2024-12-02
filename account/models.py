@@ -2,6 +2,9 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator, MaxLengthValidator
 from django.utils import timezone
+from django.dispatch import receiver
+from django.db.models.signals import post_save
+from loan_service.models import Wallet
 
 
 class User(AbstractUser):
@@ -87,3 +90,9 @@ class ProfileOfSellerOrRealEstate(models.Model):
 
     def __str__(self):
         return self.user.username
+
+
+@receiver(post_save, sender=User)
+def create_user_wallet(sender, instance, created, **kwargs):
+    if created:
+        Wallet.objects.get_or_create(user=instance)

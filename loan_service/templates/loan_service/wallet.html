@@ -1,0 +1,46 @@
+{% extends "master.html" %}
+
+{% block title %}
+Wallet
+{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header text-center bg-primary text-white">
+            <h2>My Wallet</h2>
+        </div>
+        <div class="card-body">
+            <!-- Balance Section -->
+            <div class="alert alert-info text-center" role="alert">
+                <h4>Balance: <strong>$1,250.00</strong></h4>
+            </div>
+
+            <!-- Transaction Records Section -->
+            <div class="mb-4">
+                <h5>Transaction Records</h5>
+                <ul class="list-group overflow-auto" style="max-height: 150px;">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Deposit</span>
+                        <span class="badge bg-success rounded-pill">+$200.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Withdrawal</span>
+                        <span class="badge bg-danger rounded-pill">-$50.00</span>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>Deposit</span>
+                        <span class="badge bg-success rounded-pill">+$300.00</span>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="d-flex justify-content-between">
+                <button class="btn btn-success btn-lg w-45">Deposit</button>
+                <button class="btn btn-danger btn-lg w-45">Withdraw</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
