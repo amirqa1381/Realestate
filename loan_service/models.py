@@ -7,6 +7,44 @@ from django.dispatch import receiver
 
 
 
+class Wallet(models.Model):
+    """
+    here is the class that we want to handle the balance of the user
+    """
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wallet", verbose_name="User")
+    balance = models.DecimalField(max_digits=20, decimal_places=2, default=0.00, verbose_name="Balance")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    
+    def __str__(self):
+        return f"Wallet of {self.user.username} - Balance: {self.balance}"
+    
+    
+
+
+class Transaction(models.Model):
+    """
+    this model is for handling the transaction of a user during the deposit and withdrawal
+    """
+    TRANSACTION_TYPE = [
+        ('deposit', 'Deposit'),
+        ('withdrawal', 'Withdrawal')
+    ]
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("completed", "Completed"),
+        ("failed", "Failed")
+    ]
+    reference_id = models.UUIDField(default=uuid4, editable=False, verbose_name="Reference Id")
+    wallet = models.ForeignKey(Wallet, on_delete=models.CASCADE, related_name="transaction")
+    transaction_type = models.CharField(max_length=10, choices=TRANSACTION_TYPE, verbose_name="Transaction type")
+    amount = models.DecimalField(max_digits=20, decimal_places=2)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="pending", verbose_name="Status")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="created At")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
+    
+    def __str__(self):
+        return f"{self.transaction_type.capitalize()} of {self.amount} - {self.status}"
 
 class Borrower(models.Model):
     """
