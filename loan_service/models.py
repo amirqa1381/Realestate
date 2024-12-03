@@ -11,7 +11,7 @@ class Wallet(models.Model):
     """
     here is the class that we want to handle the balance of the user
     """
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="wallet", verbose_name="User")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="wallet", verbose_name="User")
     balance = models.DecimalField(max_digits=20, decimal_places=2, default=0.00, verbose_name="Balance")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Created At")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Updated At")
@@ -158,3 +158,10 @@ def set_end_time_after_save(sender, instance, created, **kwargs):
         # here i have called set_end_time() method for saving it
         instance.set_end_time()
         instance.save(update_fields=['end_time'])
+        
+
+
+@receiver(post_save, sender=User)
+def create_user_wallet(sender, instance, created, **kwargs):
+    if created:
+        Wallet.objects.get_or_create(user=instance)
