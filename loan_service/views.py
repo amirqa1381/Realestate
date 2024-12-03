@@ -8,8 +8,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.core.exceptions import ValidationError
-
-
+from django.views import View
+from django.http import HttpRequest
 
 
 def create_activate_code():
@@ -122,4 +122,22 @@ class LoanServiceView(LoginRequiredMixin, FormView):
             for error in errors:
                 messages.error(self.request, f"{field}: {error}")
         return response
+
+
+
+class WalletView(LoginRequiredMixin, View):
+    """
+    this class is for handling the view of the wallet and it's for get and post of that 
+    """
+    def get(self, request:HttpRequest):
+        """
+        this is the get method that i have and it's handle the get method
+        """
+        return render(self.request, "loan_service/wallet.html")
     
+    
+    def post(self, request:HttpRequest):
+        """
+        this is the get method that i have and it's handle the get method
+        """
+        pass
