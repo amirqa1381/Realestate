@@ -1,5 +1,6 @@
 from .models import Transaction
 from django.db import transaction
+from decimal import Decimal
 
 
 def update_wallet(wallet, amount, transaction_type):
@@ -17,6 +18,7 @@ def update_wallet(wallet, amount, transaction_type):
         Raises:
             ValueError: If insufficient funds for a withdrawal.
     """
+    amount = Decimal(float(amount))
     with transaction.atomic():
         if transaction_type == "withdrawal":
             if wallet.balance < amount:
@@ -29,4 +31,5 @@ def update_wallet(wallet, amount, transaction_type):
         wallet.save()
         
         transaction_record = Transaction(wallet=wallet, transaction_type=transaction_type, amount=amount, status="completed")
+        transaction_record.save()
         return transaction_record

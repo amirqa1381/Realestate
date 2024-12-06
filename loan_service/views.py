@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
 from .forms import BorrowerForm, ActivateCodeCheckingForm, LoanServiceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -8,8 +8,10 @@ from django.core.mail import send_mail
 from django.conf import settings
 import random
 from django.core.exceptions import ValidationError
-
-
+from django.views import View
+from django.http import HttpRequest, Http404
+from .service import update_wallet
+from .models import Wallet
 
 
 def create_activate_code():
@@ -95,7 +97,7 @@ class LoanServiceView(LoginRequiredMixin, FormView):
     """
     form_class = LoanServiceForm
     template_name = 'loan_service/Loan_service.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('wallet')
     
     def form_valid(self, form):
         loan_service = form.save(commit=False)
@@ -107,8 +109,10 @@ class LoanServiceView(LoginRequiredMixin, FormView):
             return redirect('borrower_register')
         try:
             # here i have set the loan service and handle that 
+            wallet = get_object_or_404(Wallet, user=self.request.user)
             loan_service.save()
-            messages.success(self.request, 'Loan request submitted successfully....')
+            transaction = update_wallet(wallet, loan_service.price, "deposit")
+            messages.success(self.request, f'Loan request submitted successfully,and money was deposit to to the account and here is the transaction id {transaction.reference_id}')
             return super().form_valid(form)
         except ValidationError as e:
             for error in e.messages:
@@ -122,4 +126,34 @@ class LoanServiceView(LoginRequiredMixin, FormView):
             for error in errors:
                 messages.error(self.request, f"{field}: {error}")
         return response
+
+
+
+class WalletView(LoginRequiredMixin, View):
+    """
+    this class is for handling the view of the wallet and it's for get and post of that 
+    """
+    def get(self, request:HttpRequest):
+        """
+        this is the get method that i have and it's handle the get method
+        """
+        try:
+            wallet = get_object_or_404(Wallet, user=request.user)
+            context = {
+                'wallet': wallet
+            }
+            return render(self.request, "loan_service/wallet.html", context)
+        except Http404 as e :
+            messages.error(request, f"Wallet not found fo the user {request.user.username}")
+            return render(self.request, "account/user_panel.html")
+        except Exception as e:
+            messages.error(request, f"{e}")
+            return render(self.request, "loan_service/wallet.html", context)
+        
     
+    
+    def post(self, request:HttpRequest):
+        """
+        this is the get method that i have and it's handle the get method
+        """
+        pass
