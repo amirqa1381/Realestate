@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
 from .forms import BorrowerForm, ActivateCodeCheckingForm, LoanServiceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,7 +9,9 @@ from django.conf import settings
 import random
 from django.core.exceptions import ValidationError
 from django.views import View
-from django.http import HttpRequest
+from django.http import HttpRequest, Http404
+from .service import update_wallet
+from .models import Wallet
 
 
 def create_activate_code():
@@ -107,8 +109,11 @@ class LoanServiceView(LoginRequiredMixin, FormView):
             return redirect('borrower_register')
         try:
             # here i have set the loan service and handle that 
+            wallet = get_object_or_404(Wallet, user=self.request.user)
             loan_service.save()
-            messages.success(self.request, 'Loan request submitted successfully....')
+            transaction = update_wallet(wallet, loan_service.price, "deposit")
+            messages.success(self.request, f'Loan request submitted successfully,\
+                             and money was deposit to to the account and here is the transaction id {transaction.reference_id }')
             return super().form_valid(form)
         except ValidationError as e:
             for error in e.messages:
@@ -133,7 +138,19 @@ class WalletView(LoginRequiredMixin, View):
         """
         this is the get method that i have and it's handle the get method
         """
-        return render(self.request, "loan_service/wallet.html")
+        try:
+            wallet = get_object_or_404(Wallet, user=request.user)
+            context = {
+                'wallet': wallet
+            }
+            return render(self.request, "loan_service/wallet.html", context)
+        except Http404 as e :
+            messages.error(request, f"Wallet not found fo the user {request.user.username}")
+            return render(self.request, "account/user_panel.html")
+        except Exception as e:
+            messages.error(request, f"{e}")
+            return render(self.request, "loan_service/wallet.html", context)
+        
     
     
     def post(self, request:HttpRequest):
