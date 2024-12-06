@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import  Wallet
+from .models import  Wallet, LoanService
 
 
 
@@ -13,3 +13,4 @@ class AdminWallet(admin.ModelAdmin):
 
 
 
+admin.site.register(LoanService)
