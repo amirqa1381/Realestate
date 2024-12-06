@@ -97,7 +97,7 @@ class LoanServiceView(LoginRequiredMixin, FormView):
     """
     form_class = LoanServiceForm
     template_name = 'loan_service/Loan_service.html'
-    success_url = reverse_lazy('index')
+    success_url = reverse_lazy('wallet')
     
     def form_valid(self, form):
         loan_service = form.save(commit=False)
@@ -112,8 +112,7 @@ class LoanServiceView(LoginRequiredMixin, FormView):
             wallet = get_object_or_404(Wallet, user=self.request.user)
             loan_service.save()
             transaction = update_wallet(wallet, loan_service.price, "deposit")
-            messages.success(self.request, f'Loan request submitted successfully,\
-                             and money was deposit to to the account and here is the transaction id {transaction.reference_id }')
+            messages.success(self.request, f'Loan request submitted successfully,and money was deposit to to the account and here is the transaction id {transaction.reference_id}')
             return super().form_valid(form)
         except ValidationError as e:
             for error in e.messages:
