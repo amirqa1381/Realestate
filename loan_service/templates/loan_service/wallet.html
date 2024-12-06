@@ -24,9 +24,9 @@ Wallet
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <span>{{transaction.transaction_type}}</span>
                             {% if transaction_type == "deposit" %}
-                                <span class="badge bg-success rounded-pill">+${{transaction.amount}}</span>
+                                <span class="badge bg-danger rounded-pill">+${{transaction.amount|floatformat:"-3g"}}</span>
                             {% else %}
-                                <span class="badge bg-danger rounded-pill">-${{transaction.amount}}</span>
+                                <span class="badge bg-success rounded-pill">-${{transaction.amount|floatformat:"-3g"}}</span>
                             {% endif %}
                         </li>
                     {% endfor %}
