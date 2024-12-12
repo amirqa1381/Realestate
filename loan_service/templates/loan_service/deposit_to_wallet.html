@@ -1,16 +1,15 @@
 {% extends "master.html" %}
 
 {% block title %}
-Deposit & Withdraw
+Deposit Page
 {% endblock title %}
 
 {% block content %}
 <div class="container py-5">
-    <h1 class="text-center mb-4">Wallet Transactions</h1>
-    
+    <h1 class="text-center mb-4">Deposit Funds</h1>
+
     <div class="row justify-content-center">
-        <!-- Deposit Section -->
-        <div class="col-md-5">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-header bg-primary text-white text-center">
                     <h4>Deposit</h4>
@@ -22,26 +21,15 @@ Deposit & Withdraw
                             <label for="deposit-amount" class="form-label">Amount</label>
                             <input type="number" class="form-control" id="deposit-amount" name="amount" placeholder="Enter amount to deposit" required>
                         </div>
-                        <button type="submit" class="btn btn-success w-100">Deposit</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <!-- Withdraw Section -->
-        <div class="col-md-5">
-            <div class="card">
-                <div class="card-header bg-danger text-white text-center">
-                    <h4>Withdraw</h4>
-                </div>
-                <div class="card-body">
-                    <form method="POST" action="{% url 'wallet_withdraw' %}">
-                        {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="withdraw-amount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="withdraw-amount" name="amount" placeholder="Enter amount to withdraw" required>
+                            <label for="payment-method" class="form-label">Payment Method</label>
+                            <select class="form-control" id="payment-method" name="payment_method" required>
+                                <option value="credit_card">Credit Card</option>
+                                <option value="paypal">PayPal</option>
+                                <option value="bank_transfer">Bank Transfer</option>
+                            </select>
                         </div>
-                        <button type="submit" class="btn btn-danger w-100">Withdraw</button>
+                        <button type="submit" class="btn btn-success w-100">Deposit</button>
                     </form>
                 </div>
             </div>
