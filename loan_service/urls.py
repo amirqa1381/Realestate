@@ -4,6 +4,7 @@ from .views import (BorrowerRegisterView,
                     LoanServiceView,
                     WalletView,
                     WalletDepositView,
+                    WalletWithdrawView,
                     )
 
 
@@ -12,5 +13,6 @@ urlpatterns = [
     path("checking-activate-code/", CheckingActivateCode.as_view(), name="checking_activate_code"),
     path("loan-service/", LoanServiceView.as_view(), name="loan_service"),
     path("wallet/", WalletView.as_view(), name="wallet"),
-    path("deposit/", WalletDepositView.as_view(), name="wallet_deposit")
+    path("deposit/", WalletDepositView.as_view(), name="wallet_deposit"),
+    path("withdraw/", WalletWithdrawView.as_view(), name="wallet_withdraw")
 ]
