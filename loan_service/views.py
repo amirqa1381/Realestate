@@ -157,3 +157,47 @@ class WalletView(LoginRequiredMixin, View):
         this is the get method that i have and it's handle the get method
         """
         pass
+    
+    
+class WalletDepositView(LoginRequiredMixin, View):
+    """
+    this class is for the deposit to the wallet and it is for handling the deposit to it
+    """
+    def get(self, request:HttpRequest):
+        """
+        this method is for handling the get request of the user
+        Args:
+            request (HttpRequest): HttpRequest Object
+        """
+        return render(request, "loan_service/deposit_to_wallet.html")
+    
+    def post(self, request:HttpRequest):
+        """
+        this method is for handling the post request of the user
+
+        Args:
+            request (HttpRequest): HttpRequest Object
+        """
+        pass
+    
+    
+class WalletWithdrawView(LoginRequiredMixin, View):
+    """
+    this class is for the deposit to the wallet and it is for handling the deposit to it
+    """
+    def get(self, request:HttpRequest):
+        """
+        this method is for handling the get request of the user
+        Args:
+            request (HttpRequest): HttpRequest Object
+        """
+        return render(request, "loan_service/withdraw_to_wallet.html")
+    
+    def post(self, request:HttpRequest):
+        """
+        this method is for handling the post request of the user
+
+        Args:
+            request (HttpRequest): HttpRequest Object
+        """
+        pass

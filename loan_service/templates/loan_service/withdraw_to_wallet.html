@@ -1,0 +1,48 @@
+{% extends "master.html" %}
+
+{% block title %}
+Withdraw Page
+{% endblock title %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center mb-4">Withdraw Funds</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-danger text-white text-center">
+                    <h4>Withdraw</h4>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{% url 'wallet_withdraw' %}">
+                        {% csrf_token %}
+                        <div class="form-group mb-3">
+                            <label for="withdraw-amount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="withdraw-amount" name="amount" placeholder="Enter amount to withdraw" required>
+                        </div>
+                        <button type="submit" class="btn btn-danger w-100">Withdraw</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f8f9fa;
+    }
+    .card {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: none;
+    }
+    .card-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .btn {
+        font-size: 1.2rem;
+    }
+</style>
+{% endblock content %}
