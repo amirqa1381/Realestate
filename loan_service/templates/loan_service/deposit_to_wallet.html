@@ -19,7 +19,7 @@ Deposit Page
                         {% csrf_token %}
                         <div class="form-group mb-3">
                             <label for="deposit-amount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="deposit-amount" name="amount" placeholder="Enter amount to deposit" required>
+                            <input type="number" step="0.01" class="form-control" id="deposit-amount" name="amount" placeholder="Enter amount to deposit" required>
                         </div>
                         <div class="form-group mb-3">
                             <label for="payment-method" class="form-label">Payment Method</label>
