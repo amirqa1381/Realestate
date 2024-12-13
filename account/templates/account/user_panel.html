@@ -11,6 +11,7 @@
         <ul class="list-group" style="margin-top: 10rem">
             <li class="list-group-item text-center active"><a href="{% url 'user_info' %}">User Info</a></li>
             <li class="list-group-item text-center"><a href="{% url 'user_change_password' %}">Changing Password</a>
+            <li class="list-group-item text-center"><a href="{% url "wallet" %}">Wallet</a></li>
             </li>
             {% if request.user.home.first %}
             	 <li class="list-group-item text-center"><a href="{% url 'user_register_property' %}">Your Property</a></li>
