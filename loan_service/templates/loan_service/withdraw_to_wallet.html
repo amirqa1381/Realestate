@@ -18,8 +18,8 @@ Withdraw Page
                     <form method="POST" action="{% url 'wallet_withdraw' %}">
                         {% csrf_token %}
                         <div class="form-group mb-3">
-                            <label for="withdraw-amount" class="form-label">Amount</label>
-                            <input type="number" class="form-control" id="withdraw-amount" name="amount" placeholder="Enter amount to withdraw" required>
+                            <label for="withdraw-amount"  class="form-label">Amount</label>
+                            <input type="number" step="0.01" class="form-control" id="withdraw-amount" name="amount" placeholder="Enter amount to withdraw" required>
                         </div>
                         <button type="submit" class="btn btn-danger w-100">Withdraw</button>
                     </form>
