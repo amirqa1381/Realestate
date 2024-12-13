@@ -12,6 +12,7 @@ from django.views import View
 from django.http import HttpRequest, Http404
 from .service import update_wallet
 from .models import Wallet
+from decimal import Decimal, InvalidOperation
 
 
 def create_activate_code():
@@ -178,8 +179,22 @@ class WalletDepositView(LoginRequiredMixin, View):
         Args:
             request (HttpRequest): HttpRequest Object
         """
-        pass
-    
+        # here we should use the form of the django , but when we don't want to access to the bank 
+        # so after it for making it simple and safer than past we create a form for it
+        amount_str = request.POST.get("amount")
+        try:
+            amount_dec = Decimal(amount_str)
+            if amount_dec < 0:
+                messages.error(request, "The amount should be positive")
+                return redirect("wallet_deposit")
+        except(InvalidOperation, ValueError):
+            messages.error(request, "Enter Valid amount")
+            return redirect("wallet_deposit")
+        
+        wallet = get_object_or_404(Wallet, user=request.user)
+        transaction = update_wallet(wallet, amount_dec, "deposit")
+        messages.success(request, f"You've successfully deposit the {amount_dec} to your Wallet.")
+        return redirect("wallet")
     
 class WalletWithdrawView(LoginRequiredMixin, View):
     """
